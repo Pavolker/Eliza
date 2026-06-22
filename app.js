@@ -22,13 +22,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Inicializa o tema padrão como Calm
     document.body.className = 'theme-calm';
 
-    // Backend WebSocket — aponta para o servidor Hetzner
-    const ELIZA_BACKEND = '178.104.218.193:8001';
+    // Backend WebSocket — servidor Hetzner via Caddy + SSL
+    const ELIZA_BACKEND = 'eliza.mdh-hability.com';
 
     // Função de Conexão WebSocket com Reconexão Automática
     function connectWebSocket() {
-        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const wsUrl = `${protocol}//${ELIZA_BACKEND}/ws/${conversationId}`;
+        const wsUrl = `wss://${ELIZA_BACKEND}/ws/${conversationId}`;
         
         socket = new WebSocket(wsUrl);
 

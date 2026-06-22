@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: eliza-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: eliza
+      POSTGRES_USER: eliza
+      POSTGRES_PASSWORD: Eliza2026DB!
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U eliza"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  eliza:
+    build: .
+    container_name: eliza-api
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
+      DATABASE_URL: postgresql+asyncpg://eliza:Eliza2026DB!@postgres:5432/eliza
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  pgdata:

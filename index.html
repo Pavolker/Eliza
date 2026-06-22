@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ELIZA 2026: Um chatbot de IA empático e acolhedor focado em escuta ativa e diálogo respeitoso, inspirado na psicoterapia rogeriana.">
+    <title>ELIZA 2026 — Um Espaço para ser Ouvido</title>
+    <!-- Google Fonts: Outfit para títulos e Inter para o texto do chat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Elementos de iluminação ambiental para a transição suave de cores baseadas nas emoções -->
+    <div id="ambient-glow" class="ambient-glow"></div>
+    <div id="breathing-orb" class="breathing-orb"></div>
+
+    <main class="app-container">
+        <!-- Cabeçalho Principal -->
+        <header class="app-header">
+            <h1 id="eliza-title" class="eliza-title">ELIZA</h1>
+            <p class="eliza-subtitle">Um espaço seguro para ser ouvido, compreendido e respeitado.</p>
+        </header>
+
+        <!-- Área de Conversa Glassmorphic -->
+        <section class="chat-wrapper" aria-label="Histórico de Conversa">
+            <div id="chat-history" class="chat-history" role="log" aria-live="polite">
+                <!-- Mensagem de Boas-vindas Inicial -->
+                <div class="message eliza-message initial-message">
+                    <div class="message-content">
+                        Olá. Estou aqui e pronta para ouvir você. Como você está se sentindo hoje?
+                    </div>
+                </div>
+            </div>
+
+            <!-- Indicador de que a ELIZA está formulando a resposta/escutando -->
+            <div id="typing-indicator" class="typing-indicator hidden" aria-hidden="true">
+                <span class="indicator-dot"></span>
+                <span class="indicator-dot"></span>
+                <span class="indicator-dot"></span>
+                <span class="indicator-label">sintonizando...</span>
+            </div>
+        </section>
+
+        <!-- Campo de Entrada de Mensagem -->
+        <footer class="input-wrapper">
+            <form id="chat-form" class="chat-form" autocomplete="off">
+                <label for="user-input" class="sr-only">Digite o que está sentindo</label>
+                <input 
+                    type="text" 
+                    id="user-input" 
+                    class="user-input" 
+                    placeholder="Fale comigo, estou ouvindo..." 
+                    required 
+                    aria-label="Mensagem para ELIZA"
+                >
+                <button type="submit" id="send-button" class="send-button" aria-label="Enviar mensagem">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                </button>
+            </form>
+            <div class="status-indicator">
+                <span id="connection-dot" class="connection-dot disconnected"></span>
+                <span id="connection-text" class="connection-text">Conectando ao consultório...</span>
+                <button id="reset-button" class="reset-button" title="Reiniciar Conversa" aria-label="Reiniciar Conversa">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                    </svg>
+                </button>
+            </div>
+        </footer>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,7 +1,8 @@
-# ELIZA 2026 — Registro de Estágio
+# ELIZA 2026 — Registro de Estágio e Arquitetura
 
-**Data:** 22 de Junho de 2026
-**Versão:** 2.1 — Deploy Hetzner + Docker + PostgreSQL
+**Data:** 22 de Junho de 2026  
+**Versão:** 3.0 — Produção (Hetzner + Netlify + HTTPS)  
+**Status:** Online
 
 ---
 
@@ -11,188 +12,254 @@ ELIZA 2026 é um chatbot terapêutico empático inspirado na ELIZA original (196
 
 ---
 
-## 2. Arquitetura Atual
+## 2. Arquitetura de Produção
 
 ```
-┌──────────────────────────────────────────────┐
-│                 Frontend                      │
-│  HTML/CSS/JS vanilla + WebSocket              │
-│  Glassmorphism + transições emocionais de cor │
-└──────────────────┬───────────────────────────┘
-                   │ ws://
-┌──────────────────▼───────────────────────────┐
-│            Backend (FastAPI)                   │
-│                                                │
-│  ┌──────────────────────┐                     │
-│  │   OpenRouter Agent    │  API primária       │
-│  │   (gpt-4o-mini)      │                     │
-│  └──────────────────────┘                     │
-│              │ (se falhar)                     │
-│  ┌───────────▼──────────┐                     │
-│  │  Fallback Regex Local │  Resposta garantida │
-│  │  (regras ELIZA pt-BR) │                     │
-│  └──────────────────────┘                     │
-│                                                │
-│  ┌──────────────────────┐                     │
-│  │  Análise de Sentimento│  Zero consumo API   │
-│  │  (keywords local)     │                     │
-│  └──────────────────────┘                     │
-└──────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────┐
+│                     INTERNET                              │
+│                                                           │
+│  https://autoconhecer.netlify.app                         │
+│  ┌──────────────────────────────────────┐                │
+│  │         Netlify (Frontend)            │                │
+│  │  index.html / style.css / app.js      │                │
+│  │  Deploy automático via GitHub          │                │
+│  └──────────────┬───────────────────────┘                │
+│                 │ wss://                                  │
+│                 ▼                                         │
+│  wss://eliza.mdh-hability.com                             │
+│  ┌──────────────────────────────────────┐                │
+│  │       Caddy (SSL — Let's Encrypt)     │                │
+│  │  Porta 443 → localhost:8001          │                │
+│  └──────────────┬───────────────────────┘                │
+│                 │                                         │
+│  ┌──────────────▼───────────────────────┐                │
+│  │     Hetzner CX22 (Falkenstein)        │                │
+│  │                                       │                │
+│  │  ┌─────────────────────────────┐     │                │
+│  │  │  eliza-api (Docker)          │     │                │
+│  │  │  FastAPI + Uvicorn           │     │                │
+│  │  │  OpenRouter (gpt-4o-mini)    │     │                │
+│  │  │  Fallback Regex Local        │     │                │
+│  │  └─────────────────────────────┘     │                │
+│  │                                       │                │
+│  │  ┌─────────────────────────────┐     │                │
+│  │  │  eliza-postgres (Docker)     │     │                │
+│  │  │  PostgreSQL 16 Alpine        │     │                │
+│  │  │  Porta 5432 (interno)        │     │                │
+│  │  └─────────────────────────────┘     │                │
+│  └──────────────────────────────────────┘                │
+│                                                           │
+│  DNS: Wix (mdh-hability.com)                              │
+│  └── eliza.mdh-hability.com → 178.104.218.193            │
+└─────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 3. Stack Tecnológica
+## 3. Fluxo de uma Requisição
 
-| Camada | Tecnologia | Versão |
-|--------|------------|--------|
-| Linguagem | Python | 3.11+ |
-| Servidor | FastAPI + Uvicorn | — |
-| LLM | OpenRouter (OpenAI SDK) | `openai` |
-| Modelo padrão | `openai/gpt-4o-mini` | — |
-| Streaming | WebSocket token-a-token assíncrono | — |
-| Frontend | HTML5 + CSS3 + JS (vanilla) | — |
-| Fontes | Inter (texto), Outfit (títulos) | Google Fonts |
-| Persistência | localStorage (session_id) | Navegador |
-
----
-
-## 4. Migração Gemini → OpenRouter
-
-### O que mudou (21/06/2026)
-
-| Antes | Depois |
-|-------|--------|
-| `google-antigravity` SDK | `openai` SDK |
-| Gemini Flash (Antigravity wrapper) | Qualquer modelo via OpenRouter |
-| `Agent(config)` context manager | `OpenRouterAgent()` async generator |
-| SQLite persistido pelo Antigravity | Histórico em memória (via `self.messages`) |
-| `GEMINI_API_KEY` | `OPENROUTER_API_KEY` |
-| Conversas em `conversations/*.db` | Sem persistência de disco (por enquanto) |
-
-### Arquivos modificados
-- `requirements.txt` — trocou `google-antigravity` por `openai`
-- `agent.py` — reescrito com `AsyncOpenAI`, mantendo mesma persona e interface `chat()`
-- `main.py` — adaptado para `OpenRouterAgent`, removendo dependência do context manager
-- `.env` — `OPENROUTER_API_KEY`
+```
+1. Usuário acessa https://autoconhecer.netlify.app
+2. Frontend carrega HTML/CSS/JS do Netlify
+3. app.js abre WebSocket: wss://eliza.mdh-hability.com/ws/new
+4. Caddy (Hetzner) termina TLS, repassa para localhost:8001
+5. FastAPI recebe mensagem do usuário
+6. OpenRouterAgent chama gpt-4o-mini via OpenRouter API
+7. Tokens são streamados de volta via WebSocket
+8. Análise de sentimento local classifica a emoção
+9. Frontend transita cores do fundo conforme emoção detectada
+```
 
 ---
 
-## 5. Funcionalidades Implementadas
+## 4. Stack Tecnológica
 
-- [x] Persona rogeriana via `CustomSystemInstructions`
-- [x] Chat em tempo real via WebSocket com streaming de tokens
-- [x] Indicador visual de "sintonizando..." (digitando)
-- [x] Análise de sentimento local por keywords (5 emoções)
-- [x] Transição suave de cores do fundo baseada na emoção
-- [x] Fallback regex clássico da ELIZA (português)
-- [x] Reconexão automática com backoff exponencial
-- [x] Reset de conversa com limpeza do histórico
-- [x] Orbe animado de respiração (CSS)
-- [x] Interface glassmorphism premium
-- [x] Responsivo (mobile-first)
+| Camada | Tecnologia | Detalhe |
+|--------|------------|---------|
+| Linguagem | Python | 3.11 |
+| Backend | FastAPI + Uvicorn | WebSocket async |
+| LLM | OpenRouter (OpenAI SDK) | Modelo: `openai/gpt-4o-mini` |
+| Database | PostgreSQL 16 | Alpine, Docker |
+| Proxy SSL | Caddy 2.11 | Let's Encrypt automático |
+| Frontend | HTML5 + CSS3 + JS | Vanilla, sem frameworks |
+| Fontes | Inter (texto) + Outfit (títulos) | Google Fonts |
+| Infra | Docker Compose | 3 containers (caddy + api + postgres) |
+| Deploy Frontend | Netlify | Auto-deploy via GitHub |
+| Deploy Backend | Hetzner CX22 | Falkenstein, Alemanha |
+| DNS | Wix | Domínio `mdh-hability.com` |
+| Repositório | GitHub | `Pavolker/Eliza` |
+
+---
+
+## 5. Custos Mensais
+
+| Recurso | Provedor | Custo |
+|---------|----------|-------|
+| Servidor (CX22) | Hetzner | R\$ 30 |
+| Frontend (static) | Netlify | R\$ 0 |
+| Domínio | Wix (mdh-hability.com) | Já pago |
+| OpenRouter API | OpenRouter | R\$ 0 (~R\$ 10 com uso real) |
+| **Total** | | **~R\$ 30-40/mês** |
 
 ---
 
 ## 6. Estrutura de Arquivos
 
+### Repositório (GitHub)
+
 ```
-ELIZA/
-├── .env                  # OPENROUTER_API_KEY
-├── .venv/                # Virtualenv (sem pip)
-├── agent.py              # OpenRouterAgent + persona rogeriana
-├── main.py               # FastAPI + WebSocket + fallback
-├── index.html            # Frontend HTML
-├── style.css             # Temas emocionais + glassmorphism
-├── app.js                # WebSocket client + UI logic
-├── requirements.txt      # openai, fastapi, uvicorn, python-dotenv
-├── conversations/        # Diretório de sessões (legado)
-├── paip-lisp/            # Referência: ELIZA original em Lisp (Norvig)
+Pavolker/Eliza/
+├── .gitignore
+├── Dockerfile
+├── docker-compose.yml
+├── requirements.txt
+├── agent.py                  # OpenRouterAgent + persona rogeriana
+├── main.py                   # FastAPI + WebSocket + fallback regex
+├── index.html                # Frontend
+├── app.js                    # WebSocket client + UI
+├── style.css                 # Temas emocionais + glassmorphism
+├── estagio_app.md            # Este documento
 ├── test_conversational.py
-└── temp_save_dir/
+└── relatorio_desenvolvimento.md
 ```
 
----
-
-## 7. Como Rodar
-
-```bash
-# 1. Instalar dependências
-pip install -r requirements.txt
-
-# 2. Configurar chave OpenRouter
-# Editar .env: OPENROUTER_API_KEY=sk-or-v1-...
-
-# 3. Iniciar
-python3 -m uvicorn main:app --host 0.0.0.0 --port 8001
-
-# 4. Acessar
-open http://localhost:8001
-```
-
----
-
-## 8. Pendências e Próximos Passos
-
-- [ ] **Persistência de conversas** — O Antigravity salvava em SQLite automaticamente; com OpenRouter é necessário implementar manualmente
-- [ ] **Troca dinâmica de modelo** — Permitir selecionar modelo OpenRouter via UI
-- [ ] **Histórico por sessão** — Recuperar conversas anteriores ao reconectar
-- [ ] **Integração de voz** — Web Speech API (STT/TTS)
-- [ ] **Expansão do fallback** — 100+ regras do Lisp original (PAIP)
-- [ ] **Áudio ambiente dinâmico** — Sons adaptativos por emoção
-- [ ] **Compactação de contexto** — Resumir histórico para evitar estouro de tokens
-
----
-
-## 9. Notas Técnicas
-
-- O fallback regex garante que o app **nunca fique sem resposta**, mesmo offline ou sem cota
-- A análise de sentimento usa dicionário de keywords em português — não entende sarcasmo
-- Abas simultâneas compartilham `conversationId` via localStorage — pode causar conflitos
-- O modelo padrão `gpt-4o-mini` tem bom custo-benefício; para qualidade superior usar `anthropic/claude-3.5-sonnet` ou `openai/gpt-4o`
-
----
-
-## 10. Deploy — Hetzner CX22 (22/06/2026)
-
-| Recurso | Detalhe |
-|---------|---------|
-| Servidor | CX22 — 2 vCPU, 4GB RAM, 80GB SSD |
-| IP | **178.104.218.193** |
-| URL | **http://178.104.218.193:8001** |
-| SO | Ubuntu 24.04 |
-| Docker | 29.1.3 + Compose v2 |
-| PostgreSQL | 16 Alpine (container `eliza-postgres`) |
-| ELIZA API | Python 3.11 Slim (container `eliza-api`) |
-| Firewall | ufw: portas 22 e 8001 abertas |
-| SSH | Chave ed25519 adicionada |
-
-### Estrutura no servidor
+### Servidor Hetzner (`/opt/eliza/`)
 
 ```
 /opt/eliza/
-├── .env                  # OPENROUTER_API_KEY
-├── docker-compose.yml    # postgres + eliza
-├── Dockerfile
+├── .env                      # OPENROUTER_API_KEY
+├── docker-compose.yml        # postgres + eliza-api
+├── Dockerfile                # Python 3.11 slim
 ├── requirements.txt
 ├── agent.py
 ├── main.py
 ├── index.html / app.js / style.css
 ```
 
-### Comandos úteis
+### SSL
+
+```
+/etc/caddy/Caddyfile
+── eliza.mdh-hability.com → reverse_proxy localhost:8001
+
+Certificados: /var/lib/caddy/.local/share/caddy/
+Renovação: automática (Let's Encrypt ACME)
+```
+
+---
+
+## 7. Histórico de Migrações
+
+| Data | Versão | Mudança |
+|------|--------|---------|
+| 20/06 | 1.0 | Protótipo: Google Antigravity + Gemini |
+| 21/06 | 2.0 | Migração: Gemini → OpenRouter (gpt-4o-mini) |
+| 22/06 | 2.1 | Docker + PostgreSQL + Deploy Hetzner |
+| 22/06 | 3.0 | Caddy SSL + Netlify + domínio próprio → Produção |
+
+### O que mudou na migração Gemini → OpenRouter
+
+| Antes | Depois |
+|-------|--------|
+| `google-antigravity` SDK | `openai` SDK |
+| Gemini Flash | `openai/gpt-4o-mini` (qualquer modelo OpenRouter) |
+| SQLite (Antigravity) | PostgreSQL 16 (Docker) |
+| `GEMINI_API_KEY` | `OPENROUTER_API_KEY` |
+| Persistência automática | Em memória (PostgreSQL pendente) |
+
+---
+
+## 8. Funcionalidades
+
+- [x] Persona rogeriana (Carl Rogers) — escuta ativa, sem julgamentos
+- [x] WebSocket com streaming de tokens em tempo real
+- [x] Indicador visual "sintonizando..."
+- [x] Análise de sentimento local (5 emoções: calma, alegria, tristeza, raiva, ansiedade)
+- [x] Temas de cor dinâmicos por emoção (CSS transitions)
+- [x] Fallback regex clássico da ELIZA (português)
+- [x] Reconexão automática com backoff exponencial
+- [x] Reset de conversa (limpa histórico e sessão)
+- [x] Orbe animado de respiração (CSS)
+- [x] Interface glassmorphism
+- [x] Responsivo mobile-first
+- [x] HTTPS/WSS com Let's Encrypt (Caddy)
+- [x] Deploy automatizado (git push → Netlify)
+
+---
+
+## 9. Pendências e Próximos Passos
+
+### Críticas
+- [ ] **Persistência de conversas no PostgreSQL** — schema pronto, aguardando implementação
+- [ ] **Auth de usuários** — cadastro/login para múltiplos clientes
+- [ ] **Histórico por usuário** — recuperar conversas anteriores
+
+### Funcionais
+- [ ] **Cards de sugestão de temas** — página com conteúdo curado
+- [ ] **Pagamento recorrente** — Stripe para assinaturas mensais
+- [ ] **Troca dinâmica de modelo LLM** — selecionar via UI
+
+### Melhorias
+- [ ] **Integração de voz** — Web Speech API (STT/TTS)
+- [ ] **Expansão do fallback regex** — 100+ regras do Lisp original
+- [ ] **Áudio ambiente dinâmico** — sons adaptativos por emoção
+- [ ] **Compactação de contexto** — resumir histórico para evitar estouro de tokens
+- [ ] **Correção de abas simultâneas** — `conversationId` compartilhado via localStorage
+
+---
+
+## 10. Notas Técnicas
+
+- O fallback regex garante que o app **nunca fique sem resposta**, mesmo offline ou sem cota de API
+- A análise de sentimento usa dicionário de keywords em português — não entende sarcasmo ou sinônimos complexos
+- O modelo padrão `gpt-4o-mini` tem bom custo-benefício; alternativas: `anthropic/claude-3.5-haiku`, `google/gemini-flash-1.5`, `openai/gpt-4o`
+- Caddy renova certificados SSL automaticamente 30 dias antes da expiração
+- O PostgreSQL está rodando mas a aplicação ainda não persiste conversas nele — o agente mantém histórico apenas em RAM
+
+---
+
+## 11. Comandos de Operação
+
+### Hetzner (SSH)
 
 ```bash
-# SSH
 ssh root@178.104.218.193
 
-# Gerenciar containers
+# Containers
 cd /opt/eliza
 docker compose up -d --build   # rebuild e start
 docker compose logs -f          # logs em tempo real
 docker compose restart          # restart sem rebuild
 docker compose down             # parar tudo
 
-# Backup PostgreSQL
-docker exec eliza-postgres pg_dump -U eliza eliza > backup.sql
+# Caddy
+systemctl status caddy          # status do SSL
+systemctl restart caddy         # forçar renovação de certificado
+journalctl -u caddy -f          # logs do Caddy
+
+# PostgreSQL
+docker exec eliza-postgres psql -U eliza -d eliza   # console SQL
+docker exec eliza-postgres pg_dump -U eliza eliza > backup.sql  # backup
+
+# Firewall
+ufw status                      # portas abertas
 ```
+
+### Deploy (local)
+
+```bash
+git add -A
+git commit -m "descrição"
+git push                        # dispara auto-deploy no Netlify
+```
+
+---
+
+## 12. URLs e Acessos
+
+| Recurso | URL |
+|---------|-----|
+| Frontend (produção) | `https://autoconhecer.netlify.app` |
+| Backend (produção) | `wss://eliza.mdh-hability.com` |
+| Servidor (SSH) | `root@178.104.218.193` |
+| Repositório | `https://github.com/Pavolker/Eliza` |

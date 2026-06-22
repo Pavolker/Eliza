@@ -6,4 +6,5 @@ temp_save_dir
 conversations
 *.db
 node_modules
-.DS_Storepaip-lisp
+.DS_Store
+paip-lisp

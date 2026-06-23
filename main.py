@@ -37,7 +37,7 @@ OBJECTS_METADATA = {
         "icon": "🫀",
         "foyer": "interne",
         "text": "A percepção de manifestações físicas, tensões ou batimentos cardíacos que revelam o estado emocional.",
-        "keywords": ["meu corpo", "sinto no peito", "corporal", "tensão física", "dor no corpo", "físico", "física"]
+        "keywords": ["sinto no peito", "tensão física", "tensão no corpo", "coração acelerado", "palpitação", "aperto no peito", "formigamento", "calafrio", "nó na garganta", "falta de ar"]
     },
     "ritmos": {
         "title": "Ritmos do seu corpo",
@@ -58,7 +58,7 @@ OBJECTS_METADATA = {
         "icon": "🔗",
         "foyer": "interne",
         "text": "Apego a aprovações, hábitos ou dinâmicas emocionais que limitam sua autonomia e poder de escolha.",
-        "keywords": ["não consigo sair", "preciso disso", "dependência", "dependências", "preso", "presa", "amarrado", "amarrada", "perfeccionismo", "aprovação"]
+        "keywords": ["não consigo sair", "preciso disso", "dependência", "dependências", "perfeccionismo", "aprovação", "validação", "reconhecimento externo"]
     },
     "praticas": {
         "title": "Práticas reflexivas",
@@ -135,7 +135,7 @@ OBJECTS_METADATA = {
         "icon": "🫂",
         "foyer": "externe",
         "text": "Suas habilidades sociais: escuta, assertividade, negociação e capacidade de pedir ajuda.",
-        "keywords": ["não sei escutar", "assertivo", "assertiva", "negociar", "pedir ajuda", "habilidade social", "conversar", "timidez", "tímido", "tímida", "extrovertido", "extrovertida"]
+        "keywords": ["não sei escutar", "assertivo", "assertiva", "negociar", "pedir ajuda", "habilidade social", "timidez", "tímido", "tímida", "não consigo falar em público"]
     },
     "idiomas": {
         "title": "Idiomas que você fala",
@@ -156,14 +156,14 @@ OBJECTS_METADATA = {
         "icon": "🎭",
         "foyer": "externe",
         "text": "Padrões de comportamento social: como você age em grupo, em público e em situações novas.",
-        "keywords": ["em público", "em grupo", "socialmente", "comportamento", "me comporto", "festas", "eventos", "multidão", "desconhecidos", "novas pessoas"]
+        "keywords": ["em público", "em grupo", "socialmente", "festas", "eventos", "multidão", "desconhecidos", "novas pessoas"]
     },
     "marcos_identidade": {
         "title": "Marcos da sua identidade",
         "icon": "🏛️",
         "foyer": "externe",
         "text": "Acontecimentos que definiram quem você é: conquistas, rupturas e viradas na sua história.",
-        "keywords": ["aconteceu comigo", "mudou minha vida", "marco", "virada", "conquista", "formatura", "mudei de cidade", "divisor de águas", "antes e depois", "transformação"]
+        "keywords": ["mudou minha vida", "marco", "virada", "conquista", "formatura", "mudei de cidade", "divisor de águas", "antes e depois"]
     },
     "emocoes": {
         "title": "Emoções que expressa",
@@ -191,7 +191,7 @@ OBJECTS_METADATA = {
         "icon": "🩺",
         "foyer": "strategique",
         "text": "Seu nível de vitalidade, sono, nutrição e o cuidado geral com a saúde física e mental.",
-        "keywords": ["saúde", "médico", "médica", "dor", "dores", "doença", "doenças", "vitalidade", "corpo", "físico", "física"]
+        "keywords": ["saúde", "médico", "médica", "doença", "doenças", "vitalidade", "exame", "consulta", "remédio", "tratamento", "diagnóstico", "internação", "hospital"]
     },
     "decide": {
         "title": "Como decide",
@@ -562,11 +562,6 @@ async def websocket_endpoint(websocket: WebSocket, conversation_id: str):
                 for word in local_response.split(" "):
                     await websocket.send_json({"type": "token", "content": word + " "})
                     await asyncio.sleep(0.08)
-            
-            # 2. Verifica gatilhos de cards na resposta da ELIZA (seja LLM ou fallback)
-            assistant_triggers = detect_card_triggers(full_response_or_fallback, triggered_cards)
-            for trigger in assistant_triggers:
-                await websocket.send_json({"type": "card_trigger", "content": trigger})
             
             # Sincroniza o session_id caso tenha sido gerado um novo pelo backend
             if agent.conversation_id:

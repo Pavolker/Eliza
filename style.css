@@ -225,11 +225,23 @@ body {
 
 .agent-profile .reset-button {
     margin-left: auto;
-    opacity: 0.6;
+    opacity: 0.5;
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
 .agent-profile .reset-button:hover {
     opacity: 1;
+    background: rgba(255, 255, 255, 0.08);
 }
 
 /* Grade de Layout */
@@ -1168,6 +1180,21 @@ body {
 }
 .oc-mosaic-back:hover {
     background: rgba(255, 255, 255, 0.12);
+}
+
+.oc-mosaic-reset {
+    margin-top: 12px;
+    padding: 8px 20px;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.2);
+    font-family: inherit;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.oc-mosaic-reset:hover {
+    color: rgba(255, 255, 255, 0.4);
 }
 
 @keyframes ocFadeIn {

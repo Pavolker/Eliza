@@ -605,6 +605,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="oc-mosaic-phrase">${phrase}</div>
                 <div class="oc-mosaic-foyer">${cfg.title}</div>
                 <button class="oc-mosaic-back">Voltar para a conversa</button>
+                <button class="oc-mosaic-reset">Reiniciar este exercício</button>
             </div>
             <button class="oc-terminar-btn" style="margin-top: 8px;">Quero terminar</button>
         `;
@@ -613,6 +614,23 @@ document.addEventListener('DOMContentLoaded', () => {
         
         modal.querySelector('.oc-mosaic-back').addEventListener('click', closeOCModal);
         modal.querySelector('.oc-terminar-btn').addEventListener('click', closeOCModal);
+        modal.querySelector('.oc-mosaic-reset').addEventListener('click', async () => {
+            // Zera o estado local e no banco
+            await fetch(`https://eliza.mdh-hability.com/oc/reset/${conversationId}`, { method: 'DELETE' });
+            const cardEl = document.querySelector(`.theme-card[data-id="${s.ocId}"]`);
+            if (cardEl) {
+                cardEl.classList.remove('status-explorado');
+                const badge = cardEl.querySelector('.card-foyer-badge');
+                if (badge) {
+                    badge.classList.remove('badge-explorado');
+                    badge.textContent = 'Interno';
+                }
+            }
+            s.completed = false;
+            s.currentScene = 0;
+            s.choices = [];
+            renderOCModal();
+        });
     }
 
     function closeOCModal() {

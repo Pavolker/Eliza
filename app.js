@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
             connectionText.textContent = 'Em sintonia com você';
             reconnectDelay = 1000; // Reseta o delay
             if (reconnectTimeout) clearTimeout(reconnectTimeout);
+            enableInput();
         };
 
         socket.onmessage = (event) => {
@@ -629,6 +630,7 @@ document.addEventListener('DOMContentLoaded', () => {
             s.completed = false;
             s.currentScene = 0;
             s.choices = [];
+            enableInput();
             renderOCModal();
         });
     }

@@ -772,6 +772,8 @@ body {
     font-size: 0.65rem;
     padding: 3px 8px;
     border-radius: 10px;
+    transition: all 0.4s ease;
+}
     text-transform: uppercase;
     font-weight: 600;
     letter-spacing: 0.5px;
@@ -875,6 +877,19 @@ body {
 .theme-card.status-arquivado {
     opacity: 0.45;
     filter: grayscale(40%);
+}
+
+.theme-card.status-explorado {
+    border-color: rgba(100, 200, 130, 0.4);
+    border-style: solid;
+    box-shadow: 0 0 12px rgba(100, 200, 130, 0.15);
+}
+
+.badge-explorado {
+    background: rgba(100, 200, 130, 0.12) !important;
+    color: #a0e0b0 !important;
+    border: 1px solid rgba(100, 200, 130, 0.25) !important;
+}
 }
 
 .theme-card.status-arquivado:hover {

@@ -243,6 +243,44 @@ OC_CONFIGS = {
     }
 }
 
+async def get_oc_summary(conversation_id: str, oc_id: str, pool) -> dict:
+    """Recupera o estado do OC e constrói um resumo textual."""
+    if not pool or not conversation_id:
+        return None
+    
+    try:
+        async with pool.acquire() as conn:
+            row = await conn.fetchrow(
+                "SELECT choices, completed FROM oc_sessions WHERE conversation_id = $1 AND oc_id = $2 ORDER BY id DESC LIMIT 1",
+                conversation_id, oc_id
+            )
+            if not row or not row["completed"]:
+                return None
+            
+            choices = json.loads(row["choices"]) if isinstance(row["choices"], str) else row["choices"]
+            config = OC_CONFIGS.get(oc_id, {})
+            scenes = config.get("scenes", [])
+            
+            parts = []
+            for i, choice in enumerate(choices):
+                if i < len(scenes):
+                    domain = scenes[i]["domain"]
+                    option = scenes[i]["options"][choice] if choice < len(scenes[i]["options"]) else "?"
+                    force = config["force_pair"][choice] if choice < len(config["force_pair"]) else "?"
+                    parts.append(f"em {domain}: {force} ({option})")
+            
+            summary = "; ".join(parts)
+            
+            return {
+                "title": config.get("title", oc_id),
+                "choices": choices,
+                "summary": summary
+            }
+    except Exception as e:
+        logger.error(f"Erro ao recuperar resumo do OC: {e}")
+        return None
+
+
 def detect_card_triggers(text: str, current_triggered: set) -> list:
     text = text.lower()
     newly_triggered = []
@@ -645,6 +683,33 @@ async def websocket_endpoint(websocket: WebSocket, conversation_id: str):
         
         while True:
             user_message = await websocket.receive_text()
+            
+            # Detecta retorno de um OC completado
+            if user_message.startswith("__oc_completed__:"):
+                oc_id = user_message.split(":", 1)[1].strip()
+                oc_summary = await get_oc_summary(agent.conversation_id, oc_id, pool)
+                
+                if oc_summary:
+                    oc_context = (
+                        f"[O usuário acabou de completar o exercício de autoconhecimento '{oc_summary['title']}'.\n"
+                        f"Ele fez {len(oc_summary['choices'])} escolhas. Resumo das inclinações: {oc_summary['summary']}.\n"
+                        f"Não mencione 'exercício', 'app' ou 'sistema'. Reaja naturalmente, como se tivesse percebido "
+                        f"uma mudança sutil no jeito dele falar. Pergunte como ele se sente após essa reflexão.]"
+                    )
+                    # Injeta o contexto como mensagem do sistema antes da resposta
+                    agent.messages.append({"role": "user", "content": oc_context})
+                
+                await websocket.send_json({"type": "typing", "content": True})
+                try:
+                    async for token in agent.chat(oc_context):
+                        await websocket.send_json({"type": "token", "content": token})
+                    await websocket.send_json({"type": "typing", "content": False})
+                except Exception:
+                    await websocket.send_json({"type": "typing", "content": False})
+                
+                await websocket.send_json({"type": "emotion", "content": "calm"})
+                await websocket.send_json({"type": "end"})
+                continue
             
             # 1. Verifica gatilhos de cards no prompt do usuário
             user_triggers = detect_card_triggers(user_message, triggered_cards)

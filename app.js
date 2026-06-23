@@ -612,6 +612,29 @@ document.addEventListener('DOMContentLoaded', () => {
     function closeOCModal() {
         const overlay = document.querySelector('.oc-modal-overlay');
         if (overlay) overlay.remove();
+        
+        // Se o OC foi completado, marca o card e notifica a ELIZA
+        if (ocModalState && ocModalState.completed) {
+            const cardEl = document.querySelector(`.theme-card[data-id="${ocModalState.ocId}"]`);
+            if (cardEl) {
+                cardEl.classList.add('status-explorado');
+                const badge = cardEl.querySelector('.card-foyer-badge');
+                if (badge) {
+                    badge.textContent = 'Explorado';
+                    badge.classList.add('badge-explorado');
+                }
+            }
+            
+            // Notifica a ELIZA pelo WebSocket
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                socket.send(`__oc_completed__:${ocModalState.ocId}`);
+                showTypingIndicator();
+                disableInput();
+            }
+            
+            ocModalState = null;
+        }
+        
         disableInput();
         enableInput();
     }

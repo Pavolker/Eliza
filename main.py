@@ -509,15 +509,8 @@ async def websocket_endpoint(websocket: WebSocket, conversation_id: str):
     # Carrega histórico existente se houver
     await agent.load_history()
     
-    # Reconstrói os cards disparados a partir do histórico de mensagens
+    # Inicializa cards limpos a cada conexão — métricas partem do zero
     triggered_cards = set()
-    historical_triggers = []
-    for msg in agent.messages:
-        if msg["role"] in ["user", "assistant"]:
-            triggers = detect_card_triggers(msg["content"], triggered_cards)
-            for t in triggers:
-                t["status"] = "ativo" # marca como ativo na carga histórica
-                historical_triggers.append(t)
     
     # Gerenciamento de conexões concorrentes/abertura de múltiplas abas
     if agent.conversation_id:
@@ -537,10 +530,6 @@ async def websocket_endpoint(websocket: WebSocket, conversation_id: str):
     
     try:
         await websocket.send_json({"type": "status", "content": "connected"})
-        
-        # Envia os cards históricos acumulados para o frontend iniciar com eles carregados
-        for trigger in historical_triggers:
-            await websocket.send_json({"type": "card_trigger", "content": trigger})
         
         while True:
             user_message = await websocket.receive_text()

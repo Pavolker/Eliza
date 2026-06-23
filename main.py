@@ -109,6 +109,62 @@ OBJECTS_METADATA = {
         "text": "Crenças fundamentais, ética pessoal e ideais que direcionam suas decisões importantes.",
         "keywords": ["o que importa", "acredito", "valores", "justiça", "equilíbrio", "princípios", "ética"]
     },
+    "feedbacks": {
+        "title": "O que os outros te dizem",
+        "icon": "🗣️",
+        "foyer": "externe",
+        "text": "Feedbacks recorrentes que você recebe de pessoas próximas sobre seu comportamento ou personalidade.",
+        "keywords": ["sempre me dizem", "as pessoas falam", "me chamam de", "dizem que sou", "feedback", "me disseram", "ouvi que", "comentam"]
+    },
+    "apego": {
+        "title": "Como você se apega",
+        "icon": "🧷",
+        "foyer": "externe",
+        "text": "Seu estilo de apego nas relações: segurança, ansiedade ou evitação nos vínculos afetivos.",
+        "keywords": ["apegado", "apegada", "apego", "grudado", "grudada", "não consigo confiar", "medo de abandono", "distante", "não me envolvo"]
+    },
+    "modelos_afeto": {
+        "title": "Modelos de afeto que repete",
+        "icon": "💞",
+        "foyer": "externe",
+        "text": "Padrões de vínculo afetivo que você reproduz, herdados de experiências passadas.",
+        "keywords": ["sempre namoro", "mesmo tipo de pessoa", "relacionamento igual", "repito padrão", "escolho errado", "escolho errada", "sempre acontece", "mesma história"]
+    },
+    "habilidades_sociais": {
+        "title": "Habilidades com pessoas",
+        "icon": "🫂",
+        "foyer": "externe",
+        "text": "Suas habilidades sociais: escuta, assertividade, negociação e capacidade de pedir ajuda.",
+        "keywords": ["não sei escutar", "assertivo", "assertiva", "negociar", "pedir ajuda", "habilidade social", "conversar", "timidez", "tímido", "tímida", "extrovertido", "extrovertida"]
+    },
+    "idiomas": {
+        "title": "Idiomas que você fala",
+        "icon": "🌐",
+        "foyer": "externe",
+        "text": "As línguas que você domina e como elas ampliam ou limitam sua inserção cultural.",
+        "keywords": ["idioma", "língua", "inglês", "francês", "espanhol", "português", "aprendendo", "estrangeiro", "outra língua"]
+    },
+    "rituais": {
+        "title": "Rituais que você vive",
+        "icon": "🕯️",
+        "foyer": "externe",
+        "text": "Participação em rituais, símbolos coletivos ou tradições que marcam sua vida.",
+        "keywords": ["ritual", "tradição", "costume", "celebração", "natal", "ano novo", "religioso", "cerimônia", "culto", "missa", "rito"]
+    },
+    "comportamento": {
+        "title": "Jeito de se comportar",
+        "icon": "🎭",
+        "foyer": "externe",
+        "text": "Padrões de comportamento social: como você age em grupo, em público e em situações novas.",
+        "keywords": ["em público", "em grupo", "socialmente", "comportamento", "me comporto", "festas", "eventos", "multidão", "desconhecidos", "novas pessoas"]
+    },
+    "marcos_identidade": {
+        "title": "Marcos da sua identidade",
+        "icon": "🏛️",
+        "foyer": "externe",
+        "text": "Acontecimentos que definiram quem você é: conquistas, rupturas e viradas na sua história.",
+        "keywords": ["aconteceu comigo", "mudou minha vida", "marco", "virada", "conquista", "formatura", "mudei de cidade", "divisor de águas", "antes e depois", "transformação"]
+    },
     "emocoes": {
         "title": "Emoções que expressa",
         "icon": "😊",
@@ -172,64 +228,137 @@ def detect_card_triggers(text: str, current_triggered: set) -> list:
                     "status": "novo"
                 })
                 
-    # 2. Verifica conexões
-    # Exemplo: Conexão entre Limites e Histórias
-    if "conexao_limites_historias" not in current_triggered:
-        if "limites" in current_triggered and ("historias" in current_triggered or "raizes" in current_triggered):
-            current_triggered.add("conexao_limites_historias")
-            newly_triggered.append({
-                "type": "connection",
-                "id": "conexao_limites_historias",
-                "title": "🔗 CONEXÃO DESCOBERTA",
-                "icon": "🔗",
-                "foyer": "connection",
-                "text": "Seus LIMITES aparecem quando você fala de suas HISTÓRIAS e origens familiares.",
-                "status": "novo"
-            })
-    # Exemplo: Conexão entre Ritmos e Hábitos
-    if "conexao_ritmos_habitos" not in current_triggered:
-        if "ritmos" in current_triggered and "habitos" in current_triggered:
-            current_triggered.add("conexao_ritmos_habitos")
-            newly_triggered.append({
-                "type": "connection",
-                "id": "conexao_ritmos_habitos",
-                "title": "🔗 CONEXÃO DESCOBERTA",
-                "icon": "🔗",
-                "foyer": "connection",
-                "text": "A regulação dos seus RITMOS corporais está ligada aos seus HÁBITOS diários.",
-                "status": "novo"
-            })
-            
-    # 3. Verifica Saltos (Sauts d'Évolution)
-    saut_keywords = ["percebi", "entendi que", "agora posso", "vou mudar", "consegui", "mudei", "comecei a", "ficou claro", "percepção"]
-    if "saut_evolution" not in current_triggered:
-        if any(kw in text for kw in saut_keywords):
-            if len(current_triggered) > 0:
-                current_triggered.add("saut_evolution")
+    # 2. Verifica conexões dinâmicas entre objetos ativados
+    conexoes = [
+        # Conexões Interne ↔ Interne
+        {"id": "conexao_limites_conflito", "cards": ["limites", "conflito"],
+         "text": "Seus LIMITES pessoais aparecem com força nos momentos de CONFLITO."},
+        {"id": "conexao_sensacoes_ritmos", "cards": ["sensacoes", "ritmos"],
+         "text": "Seu corpo fala: as SENSAÇÕES físicas seguem os RITMOS internos que você cultiva."},
+        {"id": "conexao_reacoes_dependencias", "cards": ["reacoes", "dependencias"],
+         "text": "As REAÇÕES que se repetem estão ligadas às DEPENDÊNCIAS emocionais que te prendem."},
+        # Conexões Interne ↔ Externe
+        {"id": "conexao_limites_historias", "cards": ["limites", "historias"],
+         "text": "Seus LIMITES de hoje têm raízes nas HISTÓRIAS que te formaram."},
+        {"id": "conexao_limites_raizes", "cards": ["limites", "raizes"],
+         "text": "Os LIMITES que você reconhece dialogam com suas RAÍZES culturais."},
+        {"id": "conexao_conflito_comunicacao", "cards": ["conflito", "comunicacao"],
+         "text": "Seu jeito de entrar em CONFLITO reflete seu estilo de COMUNICAÇÃO."},
+        {"id": "conexao_dependencias_apego", "cards": ["dependencias", "apego"],
+         "text": "Suas DEPENDÊNCIAS emocionais ecoam no seu estilo de APEGO nas relações."},
+        {"id": "conexao_dependencias_modelos", "cards": ["dependencias", "modelos_afeto"],
+         "text": "As DEPENDÊNCIAS que te prendem reproduzem MODELOS DE AFETO que você aprendeu."},
+        {"id": "conexao_praticas_observar", "cards": ["praticas", "observar"],
+         "text": "Suas PRÁTICAS reflexivas fortalecem sua CAPACIDADE DE SE OBSERVAR."},
+        {"id": "conexao_reacoes_feedbacks", "cards": ["reacoes", "feedbacks"],
+         "text": "As REAÇÕES que você descreve batem com o que os OUTROS TE DIZEM sobre você."},
+        # Conexões Externe ↔ Externe
+        {"id": "conexao_historias_marcos", "cards": ["historias", "marcos_identidade"],
+         "text": "Suas HISTÓRIAS de vida contêm os MARCOS que definem sua identidade."},
+        {"id": "conexao_lacos_apego", "cards": ["lacos", "apego"],
+         "text": "Os LAÇOS que te sustentam revelam seu estilo de APEGO nas relações."},
+        {"id": "conexao_lacos_habilidades", "cards": ["lacos", "habilidades_sociais"],
+         "text": "Seus LAÇOS são sustentados pelas HABILIDADES SOCIAIS que você desenvolveu."},
+        {"id": "conexao_comunicacao_habilidades", "cards": ["comunicacao", "habilidades_sociais"],
+         "text": "Seu jeito de se COMUNICAR é a base das suas HABILIDADES com pessoas."},
+        {"id": "conexao_valores_comportamento", "cards": ["valores", "comportamento"],
+         "text": "Os VALORES que te guiam se manifestam no seu JEITO DE SE COMPORTAR socialmente."},
+        {"id": "conexao_valores_marcos", "cards": ["valores", "marcos_identidade"],
+         "text": "Seus VALORES foram forjados nos MARCOS que definiram sua trajetória."},
+        {"id": "conexao_raizes_rituais", "cards": ["raizes", "rituais"],
+         "text": "Suas RAÍZES culturais se expressam nos RITUAIS que você vive."},
+        # Conexões Interne ↔ Stratégique
+        {"id": "conexao_ritmos_habitos", "cards": ["ritmos", "habitos"],
+         "text": "A regulação dos seus RITMOS corporais depende dos HÁBITOS que você cultiva."},
+        {"id": "conexao_conflito_lidar", "cards": ["conflito", "lidar_emocoes"],
+         "text": "Seu jeito de entrar em CONFLITO revela COMO VOCÊ LIDA COM AS EMOÇÕES."},
+        {"id": "conexao_sensacoes_saude", "cards": ["sensacoes", "saude"],
+         "text": "As SENSAÇÕES do seu corpo são indicadores diretos de COMO ESTÁ SUA SAÚDE."},
+        {"id": "conexao_observar_metacognicao", "cards": ["observar", "metacognicao"],
+         "text": "Sua CAPACIDADE DE SE OBSERVAR alimenta COMO VOCÊ PENSA SOBRE PENSAR."},
+        # Conexões Externe ↔ Stratégique
+        {"id": "conexao_historias_decide", "cards": ["historias", "decide"],
+         "text": "As HISTÓRIAS que te formaram influenciam COMO VOCÊ DECIDE hoje."},
+        {"id": "conexao_valores_decide", "cards": ["valores", "decide"],
+         "text": "Os VALORES que te guiam determinam COMO VOCÊ DECIDE nas encruzilhadas."},
+        {"id": "conexao_comportamento_emocoes", "cards": ["comportamento", "emocoes"],
+         "text": "Seu JEITO DE SE COMPORTAR socialmente molda as EMOÇÕES QUE VOCÊ EXPRESSA."},
+        {"id": "conexao_marcos_lidar", "cards": ["marcos_identidade", "lidar_emocoes"],
+         "text": "Os MARCOS da sua identidade definiram COMO VOCÊ LIDA COM AS EMOÇÕES."},
+    ]
+    
+    for conn in conexoes:
+        if conn["id"] not in current_triggered:
+            if all(c in current_triggered for c in conn["cards"]):
+                current_triggered.add(conn["id"])
                 newly_triggered.append({
-                    "type": "saut",
-                    "id": "saut_evolution",
-                    "title": "✨ SALTO EVOLUTIVO",
-                    "icon": "✨",
-                    "foyer": "saut",
-                    "text": "Você percebeu algo novo: conectou seus limites a escolhas mais conscientes.",
+                    "type": "connection",
+                    "id": conn["id"],
+                    "title": "CONEXÃO DESCOBERTA",
+                    "icon": "🔗",
+                    "foyer": "connection",
+                    "text": conn["text"],
                     "status": "novo"
                 })
                 
-    # 4. Verifica Reflexão (após múltiplos objetos ativados)
-    if "reflexao" not in current_triggered:
-        # Se o usuário já ativou pelo menos 2 objetos, sugere reflexão
-        if len([c for c in current_triggered if c in OBJECTS_METADATA]) >= 2:
-            current_triggered.add("reflexao")
+    # 3. Verifica Saltos (Sauts d'Évolution) — progressivos conforme objetos ativados
+    saut_keywords = ["percebi", "entendi que", "agora posso", "vou mudar", "consegui", "mudei",
+                     "comecei a", "ficou claro", "percepção", "mudou", "transformou", "nunca mais",
+                     "decidi que", "a partir de agora", "aprendi que"]
+    object_count = len([c for c in current_triggered if c in OBJECTS_METADATA])
+    
+    if "saut_evolution" not in current_triggered:
+        if any(kw in text for kw in saut_keywords) and object_count > 0:
+            current_triggered.add("saut_evolution")
+            saut_texts = [
+                "Você percebeu algo novo e conectou pontos antes dispersos da sua experiência.",
+                "Um salto de clareza: você está transformando observação em compreensão ativa.",
+                "Algo mudou na sua percepção. Esse é um momento de evolução pessoal genuíno.",
+            ]
             newly_triggered.append({
-                "type": "reflexao",
-                "id": "reflexao",
-                "title": "📝 PARA LEVAR",
-                "icon": "📝",
-                "foyer": "reflexao",
-                "text": "O que aconteceria se você experimentasse dizer 'não' uma vez essa semana?",
+                "type": "saut",
+                "id": "saut_evolution",
+                "title": "SALTO EVOLUTIVO",
+                "icon": "✨",
+                "foyer": "saut",
+                "text": random.choice(saut_texts),
                 "status": "novo"
             })
+                
+    # 4. Verifica Reflexões progressivas (conforme número de objetos ativados)
+    if object_count >= 2 and "reflexao_2" not in current_triggered:
+        current_triggered.add("reflexao_2")
+        newly_triggered.append({
+            "type": "reflexao",
+            "id": "reflexao_2",
+            "title": "PARA LEVAR",
+            "icon": "📝",
+            "foyer": "reflexao",
+            "text": "Você já mapeou dois temas importantes. O que esses temas revelam sobre seus padrões?",
+            "status": "novo"
+        })
+    elif object_count >= 5 and "reflexao_5" not in current_triggered:
+        current_triggered.add("reflexao_5")
+        newly_triggered.append({
+            "type": "reflexao",
+            "id": "reflexao_5",
+            "title": "PARA LEVAR",
+            "icon": "📝",
+            "foyer": "reflexao",
+            "text": "Cinco temas já emergiram. Como seria sua vida se você equilibrasse essas dimensões?",
+            "status": "novo"
+        })
+    elif object_count >= 10 and "reflexao_10" not in current_triggered:
+        current_triggered.add("reflexao_10")
+        newly_triggered.append({
+            "type": "reflexao",
+            "id": "reflexao_10",
+            "title": "PARA LEVAR",
+            "icon": "📝",
+            "foyer": "reflexao",
+            "text": "Dez temas mapeados. Você está construindo uma cartografia rica da sua singularidade.",
+            "status": "novo"
+        })
             
     return newly_triggered
 

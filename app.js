@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const activeCards = {};
     const foyerTotals = {
         interne: 8,
-        externe: 5,
+        externe: 13,
         strategique: 6
     };
 

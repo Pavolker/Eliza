@@ -1,7 +1,8 @@
 import asyncio
 import re
 import random
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+import json
+from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
 from fastapi.responses import FileResponse
 import uvicorn
 import os
@@ -209,6 +210,38 @@ OBJECTS_METADATA = {
     }
 }
 
+OC_CONFIGS = {
+    "limites": {
+        "id": "limites",
+        "title": "Limites que você reconhece",
+        "force_pair": ["Ceder", "Impor"],
+        "scenes": [
+            {
+                "text": "Você está saindo do trabalho às 18h. Seu chefe pede um relatório 'para ontem'.",
+                "domain": "Trabalho",
+                "domain_color": "#4a6fa5",
+                "options": ["Fica e faz o relatório", "Diz que amanhã entrega"]
+            },
+            {
+                "text": "Um parente quer que você organize a festa de fim de ano — de novo, como no ano passado.",
+                "domain": "Família",
+                "domain_color": "#c4956a",
+                "options": ["Aceita, mesmo sabendo que vai se sobrecarregar", "Sugere que outro familiar organize desta vez"]
+            },
+            {
+                "text": "Alguém próximo quer definir todo o seu fim de semana. Você só queria descansar.",
+                "domain": "Relação",
+                "domain_color": "#b06e8a",
+                "options": ["Aceita o programa do outro sem discutir", "Propõe dividir: um período de descanso, um de programa"]
+            }
+        ],
+        "mosaic_icons": {
+            "left": "🤲",
+            "right": "✋"
+        }
+    }
+}
+
 def detect_card_triggers(text: str, current_triggered: set) -> list:
     text = text.lower()
     newly_triggered = []
@@ -391,6 +424,20 @@ async def lifespan(app: FastAPI):
                 );
                 CREATE INDEX IF NOT EXISTS idx_messages_conversation_id ON messages(conversation_id);
             """)
+            await conn.execute("""
+                CREATE TABLE IF NOT EXISTS oc_sessions (
+                    id SERIAL PRIMARY KEY,
+                    conversation_id VARCHAR(100) NOT NULL,
+                    oc_id VARCHAR(50) NOT NULL,
+                    scene_index INTEGER DEFAULT 0,
+                    choices JSONB DEFAULT '[]',
+                    completed BOOLEAN DEFAULT FALSE,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
+                CREATE INDEX IF NOT EXISTS idx_oc_sessions_conversation 
+                    ON oc_sessions(conversation_id, oc_id);
+            """)
             logger.info("Tabela de mensagens verificada/criada.")
     except Exception as e:
         logger.warning(f"Erro ao inicializar banco de dados: {e}. Executando com histórico em memória.")
@@ -415,6 +462,62 @@ async def get_css():
 @app.get("/app.js")
 async def get_js():
     return FileResponse("app.js")
+
+# --- Endpoints dos OCs (Objetos de Conhecimento) ---
+
+@app.get("/oc/config/{oc_id}")
+async def get_oc_config(oc_id: str):
+    config = OC_CONFIGS.get(oc_id)
+    if not config:
+        return {"error": "OC não encontrado"}
+    return {"id": oc_id, **config}
+
+@app.get("/oc/state/{conversation_id}/{oc_id}")
+async def get_oc_state(conversation_id: str, oc_id: str, request: Request):
+    pool = request.app.state.db_pool
+    if not pool:
+        return {"scene_index": 0, "choices": [], "completed": False}
+    try:
+        async with pool.acquire() as conn:
+            row = await conn.fetchrow(
+                "SELECT scene_index, choices, completed FROM oc_sessions WHERE conversation_id = $1 AND oc_id = $2 ORDER BY id DESC LIMIT 1",
+                conversation_id, oc_id
+            )
+            if row:
+                return {
+                    "scene_index": row["scene_index"],
+                    "choices": json.loads(row["choices"]) if isinstance(row["choices"], str) else row["choices"],
+                    "completed": row["completed"]
+                }
+    except Exception:
+        pass
+    return {"scene_index": 0, "choices": [], "completed": False}
+
+@app.post("/oc/save")
+async def save_oc_progress(request: Request):
+    data = await request.json()
+    conversation_id = data.get("conversation_id")
+    oc_id = data.get("oc_id")
+    scene_index = data.get("scene_index", 0)
+    choices = data.get("choices", [])
+    completed = data.get("completed", False)
+    
+    pool = request.app.state.db_pool
+    if not pool:
+        return {"status": "ok", "note": "sem banco de dados"}
+    
+    try:
+        async with pool.acquire() as conn:
+            await conn.execute(
+                """INSERT INTO oc_sessions (conversation_id, oc_id, scene_index, choices, completed, updated_at) 
+                   VALUES ($1, $2, $3, $4::jsonb, $5, CURRENT_TIMESTAMP)""",
+                conversation_id, oc_id, scene_index, json.dumps(choices), completed
+            )
+        return {"status": "ok"}
+    except Exception as e:
+        logger.error(f"Erro ao salvar progresso do OC: {e}")
+        return {"status": "error", "detail": str(e)}
+
 
 async def analyze_emotion(text: str) -> str:
     text = text.lower()

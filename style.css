@@ -993,3 +993,169 @@ body {
         font-size: 0.98rem;
     }
 }
+
+/* ==========================================================================
+   MODAL DO OC (OBJETO DE CONHECIMENTO)
+   ========================================================================== */
+
+.oc-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(5, 5, 15, 0.92);
+    backdrop-filter: blur(20px);
+    animation: ocFadeIn 0.4s ease;
+}
+
+.oc-modal {
+    width: 100%;
+    max-width: 520px;
+    min-height: 380px;
+    background: rgba(20, 22, 35, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 24px;
+    padding: 40px 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    transition: border-color 0.8s ease;
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+}
+
+.oc-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 1.4rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    transition: color 0.2s;
+}
+.oc-modal-close:hover {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.oc-step-indicator {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.25);
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+.oc-scene-domain {
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    font-weight: 500;
+}
+
+.oc-scene-text {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--text-primary);
+    margin-bottom: 40px;
+    max-width: 400px;
+}
+
+.oc-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.oc-choice-btn {
+    width: 100%;
+    padding: 16px 20px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-align: center;
+}
+.oc-choice-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.18);
+    transform: translateY(-1px);
+}
+.oc-choice-btn:active {
+    transform: scale(0.98);
+}
+
+.oc-terminar-btn {
+    margin-top: 36px;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.25);
+    font-family: inherit;
+    font-size: 0.82rem;
+    cursor: pointer;
+    padding: 8px 16px;
+    transition: color 0.2s;
+}
+.oc-terminar-btn:hover {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Mosaico */
+.oc-mosaic {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+.oc-mosaic-icons {
+    display: flex;
+    gap: 20px;
+    font-size: 2.2rem;
+}
+
+.oc-mosaic-phrase {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--text-primary);
+    max-width: 380px;
+    font-style: italic;
+}
+
+.oc-mosaic-foyer {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 2px;
+    margin-top: 4px;
+}
+
+.oc-mosaic-back {
+    margin-top: 32px;
+    padding: 12px 28px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.oc-mosaic-back:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+@keyframes ocFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}

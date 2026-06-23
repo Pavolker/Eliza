@@ -186,18 +186,24 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
 
-        // Event listener para expandir/recolher
+        // Event listener para expandir/recolher — ou abrir OC modal se for objeto de conhecimento
         cardDiv.addEventListener('click', (e) => {
             if (e.target.classList.contains('card-btn')) return;
             
-            // Fecha outros cards que estejam expandidos
+            // Se for um OC (foyer válido + type card), tenta abrir o modal de aprofundamento
+            const validFoyers = ['interne', 'externe', 'strategique'];
+            if (cardData.type === 'card' && validFoyers.includes(cardData.foyer)) {
+                openOCModal(cardId, cardData);
+                return;
+            }
+            
+            // Caso contrário, expande/recolhe normalmente
             document.querySelectorAll('.theme-card.expanded').forEach(el => {
                 if (el !== cardDiv) el.classList.remove('expanded');
             });
             
             cardDiv.classList.toggle('expanded');
             
-            // Remove o brilho de novo ao interagir
             if (cardDiv.classList.contains('status-novo')) {
                 cardDiv.classList.remove('status-novo');
                 cardDiv.classList.add('status-ativo');
@@ -434,6 +440,180 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
+    }
+
+    // ====================================================================
+    // MODAL DO OC — Objeto de Conhecimento (3 cenas → mosaico)
+    // ====================================================================
+    
+    let ocModalState = null;
+
+    async function openOCModal(ocId, cardData) {
+        const host = conversationId && conversationId !== 'new' 
+            ? '' : '/..'; // mesmo domínio no Netlify, mas aponta pro backend
+        
+        try {
+            // Busca a configuração do OC
+            const configRes = await fetch(`https://eliza.mdh-hability.com/oc/config/${ocId}`);
+            if (!configRes.ok) return; // OC sem config — não abre modal
+            const config = await configRes.json();
+            if (config.error) return;
+            
+            // Busca o estado atual
+            const stateRes = await fetch(`https://eliza.mdh-hability.com/oc/state/${conversationId}/${ocId}`);
+            const state = await stateRes.json();
+            
+            ocModalState = {
+                ocId,
+                cardData,
+                config,
+                currentScene: state.scene_index || 0,
+                choices: state.choices || [],
+                completed: state.completed || false
+            };
+            
+            renderOCModal();
+        } catch (err) {
+            console.log('OC não disponível:', err);
+        }
+    }
+
+    function renderOCModal() {
+        const existing = document.querySelector('.oc-modal-overlay');
+        if (existing) existing.remove();
+        
+        const s = ocModalState;
+        const overlay = document.createElement('div');
+        overlay.className = 'oc-modal-overlay';
+        
+        if (s.completed) {
+            renderMosaic(overlay);
+        } else {
+            renderScene(overlay);
+        }
+        
+        document.body.appendChild(overlay);
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeOCModal();
+        });
+    }
+
+    function renderScene(overlay) {
+        const s = ocModalState;
+        const scene = s.config.scenes[s.currentScene];
+        const sceneIndex = s.currentScene;
+        const total = s.config.scenes.length;
+        
+        const modal = document.createElement('div');
+        modal.className = 'oc-modal';
+        modal.style.borderColor = scene.domain_color + '33';
+        
+        modal.innerHTML = `
+            <button class="oc-modal-close" onclick="document.querySelector('.oc-modal-overlay').remove(); disableInput(); enableInput();">✕</button>
+            <div class="oc-step-indicator">${sceneIndex + 1} / ${total}</div>
+            <div class="oc-scene-domain" style="color: ${scene.domain_color}">${scene.domain}</div>
+            <div class="oc-scene-text">${scene.text}</div>
+            <div class="oc-choices">
+                ${scene.options.map((opt, i) => `
+                    <button class="oc-choice-btn choice-${i}" data-choice="${i}">${opt}</button>
+                `).join('')}
+            </div>
+            <button class="oc-terminar-btn">Quero terminar</button>
+        `;
+        
+        overlay.appendChild(modal);
+        
+        // Handlers
+        modal.querySelectorAll('.oc-choice-btn').forEach(btn => {
+            btn.addEventListener('click', () => advanceScene(parseInt(btn.dataset.choice)));
+        });
+        
+        modal.querySelector('.oc-terminar-btn').addEventListener('click', () => {
+            saveOCState(true);
+            s.completed = true;
+            renderOCModal();
+        });
+        
+        modal.querySelector('.oc-modal-close').addEventListener('click', () => {
+            disableInput();
+            enableInput();
+        });
+    }
+
+    async function advanceScene(choice) {
+        const s = ocModalState;
+        s.choices.push(choice);
+        
+        if (s.currentScene + 1 >= s.config.scenes.length) {
+            // Última cena → salva e mostra mosaico
+            await saveOCState(true);
+            s.completed = true;
+            renderOCModal();
+        } else {
+            s.currentScene++;
+            await saveOCState(false);
+            renderOCModal();
+        }
+    }
+
+    async function saveOCState(completed) {
+        const s = ocModalState;
+        try {
+            await fetch('https://eliza.mdh-hability.com/oc/save', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    conversation_id: conversationId,
+                    oc_id: s.ocId,
+                    scene_index: s.currentScene,
+                    choices: s.choices,
+                    completed: completed
+                })
+            });
+        } catch (e) {
+            console.log('Erro ao salvar progresso OC:', e);
+        }
+    }
+
+    function renderMosaic(overlay) {
+        const s = ocModalState;
+        const cfg = s.config;
+        const icons = s.choices.map(c => cfg.mosaic_icons[c === 0 ? 'left' : 'right']);
+        
+        // Frase descritiva
+        const cedeCount = s.choices.filter(c => c === 0).length;
+        const impoeCount = s.choices.filter(c => c === 1).length;
+        
+        let phrase;
+        if (cedeCount === 3) phrase = 'Este personagem cedeu em todas as situações.';
+        else if (impoeCount === 3) phrase = 'Este personagem impôs limites em todas as situações.';
+        else if (cedeCount > impoeCount) phrase = 'Este personagem tende a ceder, mas em alguns momentos impõe seus limites.';
+        else phrase = 'Este personagem tende a impor limites, mas em alguns momentos também cede.';
+        
+        const modal = document.createElement('div');
+        modal.className = 'oc-modal';
+        
+        modal.innerHTML = `
+            <div class="oc-mosaic">
+                <div class="oc-mosaic-icons">${icons.join('')}</div>
+                <div class="oc-mosaic-phrase">${phrase}</div>
+                <div class="oc-mosaic-foyer">${cfg.title}</div>
+                <button class="oc-mosaic-back">Voltar para a conversa</button>
+            </div>
+            <button class="oc-terminar-btn" style="margin-top: 8px;">Quero terminar</button>
+        `;
+        
+        overlay.appendChild(modal);
+        
+        modal.querySelector('.oc-mosaic-back').addEventListener('click', closeOCModal);
+        modal.querySelector('.oc-terminar-btn').addEventListener('click', closeOCModal);
+    }
+
+    function closeOCModal() {
+        const overlay = document.querySelector('.oc-modal-overlay');
+        if (overlay) overlay.remove();
+        disableInput();
+        enableInput();
     }
 
     // Inicia conexão

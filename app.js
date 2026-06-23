@@ -434,6 +434,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 updatePlaceholderVisibility();
                 updateFoyerProgress();
                 
+                // Limpa os OCs do banco de dados
+                if (conversationId && conversationId !== 'new') {
+                    fetch(`https://eliza.mdh-hability.com/oc/reset/${conversationId}`, { method: 'DELETE' })
+                        .catch(() => {});
+                }
+                
                 // Força reconexão WebSocket enviando 'new' para o servidor
                 if (socket) {
                     socket.close();

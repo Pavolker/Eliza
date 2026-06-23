@@ -565,6 +565,22 @@ async def save_oc_progress(request: Request):
         logger.error(f"Erro ao salvar progresso do OC: {e}")
         return {"status": "error", "detail": str(e)}
 
+@app.delete("/oc/reset/{conversation_id}")
+async def reset_oc_sessions(conversation_id: str, request: Request):
+    pool = request.app.state.db_pool
+    if not pool:
+        return {"status": "ok", "note": "sem banco de dados"}
+    try:
+        async with pool.acquire() as conn:
+            await conn.execute(
+                "DELETE FROM oc_sessions WHERE conversation_id = $1",
+                conversation_id
+            )
+        return {"status": "ok"}
+    except Exception as e:
+        logger.error(f"Erro ao resetar OCs: {e}")
+        return {"status": "error"}
+
 
 async def analyze_emotion(text: str) -> str:
     text = text.lower()

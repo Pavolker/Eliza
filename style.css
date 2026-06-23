@@ -230,13 +230,22 @@ body {
     font-size: 0.7rem;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 8px;
-    padding: 4px 10px;
+    padding: 6px 12px;
     cursor: pointer;
     transition: all 0.2s;
+}
+
+.agent-profile .reset-button svg {
+    flex-shrink: 0;
+}
+
+.agent-profile .reset-button span {
+    font-size: 0.75rem;
+    font-weight: 400;
 }
 
 .agent-profile .reset-button:hover {

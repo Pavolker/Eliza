@@ -1,7 +1,7 @@
 # ELIZA 2026 — Registro de Estágio e Arquitetura
 
 **Data:** 23 de Junho de 2026
-**Versão:** 3.1 — Split-Screen + Cards Autoconhecimento + PostgreSQL Persistência
+**Versão:** 3.2 — PoC OC App (Objeto de Conhecimento) + ELIZA reativa
 **Status:** Online
 
 ---
@@ -159,6 +159,7 @@ Renovação: automática (Let's Encrypt ACME)
 | 22/06 | 2.1 | Docker + PostgreSQL + Deploy Hetzner |
 | 22/06 | 3.0 | Caddy SSL + Netlify + domínio próprio → Produção |
 | 23/06 | 3.1 | Split-screen, 27 cards autoconhecimento, PostgreSQL persistência, persona expandida |
+| 23/06 | 3.2 | PoC OC App: modal 3 cenas, mosaico, ELIZA reativa, card "Explorado" |
 
 ### O que mudou na migração Gemini → OpenRouter
 
@@ -214,8 +215,92 @@ Renovação: automática (Let's Encrypt ACME)
 - [ ] **Expansão do fallback regex** — 100+ regras do Lisp original
 - [ ] **Áudio ambiente dinâmico** — sons adaptativos por emoção
 - [ ] **Compactação de contexto** — resumir histórico para evitar estouro de tokens
+- [ ] **27 conteúdos dos OCs** — escrever as cenas e pares de força dos outros 26 OCs
+- [ ] **Acumulação entre OCs** — mosaico maior quando múltiplos OCs do mesmo foyer são explorados
+- [ ] **Gráfico aranha** — visualização das inclinações por foyer
 
 ---
+
+## 10. OC App — Objeto de Conhecimento (Prova de Conceito)
+
+### Arquitetura
+
+```
+Chat ELIZA → card aparece na sidebar → usuário clica
+    → fetch GET /oc/config/{oc_id}
+    → Modal OC abre (3 cenas de escolha binária)
+        → Cena 1 (ex: Trabalho) → Cena 2 (ex: Família) → Cena 3 (ex: Relação)
+        → Mosaico final (ícones + frase descritiva)
+    → "Voltar para conversa" ou "Quero terminar"
+    → Card marcado como "Explorado" (borda verde)
+    → WebSocket envia __oc_completed__:limites
+    → ELIZA recebe contexto e reage naturalmente
+```
+
+### Dinâmicas do template (por OC)
+
+| Dinâmica | Descrição |
+|---|---|
+| **Espelho indireto** | Usuário reage a cenas externas, não responde sobre si |
+| **Tensão binária** | Cada cena tem 2 forças opostas (ex: Ceder × Impor) |
+| **Personagem** | Constrói perfil de um personagem parecido com ele |
+| **Rastro** | Mosaico de ícones se forma sem revelação antecipada |
+
+### Configuração do OC (exemplo: Limites)
+
+```python
+OC_CONFIGS = {
+    "limites": {
+        "force_pair": ["Ceder", "Impor"],
+        "scenes": [
+            {"domain": "Trabalho", "color": "#4a6fa5", ...},
+            {"domain": "Família",  "color": "#c4956a", ...},
+            {"domain": "Relação", "color": "#b06e8a", ...},
+        ],
+        "mosaic_icons": {"left": "🤲", "right": "✋"}
+    }
+}
+```
+
+### Endpoints REST
+
+| Método | Rota | Função |
+|---|---|---|
+| `GET` | `/oc/config/{oc_id}` | Retorna config do OC (cenas, cores, pares) |
+| `GET` | `/oc/state/{conv}/{oc_id}` | Estado atual do OC (cena, escolhas, completado) |
+| `POST` | `/oc/save` | Persiste progresso (cenas, escolhas) |
+| `DELETE` | `/oc/reset/{conv}` | Zera todos os OCs da conversa |
+
+### Banco de dados — tabela `oc_sessions`
+
+```sql
+id, conversation_id, oc_id, scene_index, choices (JSONB), completed, created_at, updated_at
+```
+
+### O que foi implementado hoje (23/06)
+
+- [x] OC Limites: 3 cenas (Trabalho, Família, Relação) com eixo Ceder × Impor
+- [x] Modal full-screen com cores por domínio
+- [x] Mosaico final: ícones 🤲✋ + frase descritiva
+- [x] Persistência no PostgreSQL (`oc_sessions`)
+- [x] Botão "Reiniciar este exercício" no mosaico
+- [x] Card muda para "Explorado" (borda verde) ao completar
+- [x] ELIZA reage ao OC completado (recebe resumo, responde naturalmente)
+- [x] Contexto do OC persiste no histórico de conversa
+- [x] Reset global "Reiniciar" limpa OCs do banco
+- [x] Correção: input reabilitado após reconexão
+- [x] Correção: double-append no contexto OC
+- [x] Correção: cards só do usuário, não da ELIZA
+- [x] Correção: keywords desambiguadas para evitar falsos positivos
+- [x] 27 objetos completos (8+13+6) + 25 conexões dinâmicas
+- [x] Labels em português: Dimensões do Autoconhecimento
+
+### O que falta para amanhã
+
+1. **Conteúdo dos 26 OCs restantes** — cenas, domínios, pares de força (você escreve)
+2. **Acumulação visual** — quando múltiplos OCs do mesmo foyer são explorados
+3. **Sistema CNA** — diagnóstico antes do chat
+4. **Gráfico aranha** — visual das inclinações por foyer
 
 ## 10. Notas Técnicas
 

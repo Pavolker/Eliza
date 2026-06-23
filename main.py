@@ -4,6 +4,7 @@ import random
 import json
 from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
 from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import os
 import logging
@@ -450,6 +451,14 @@ async def lifespan(app: FastAPI):
         logger.info("Pool de conexões com o banco encerrado.")
 
 app = FastAPI(title="ELIZA 2026", lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://autoconhecer.netlify.app", "http://localhost:8001", "http://localhost:*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 async def get_index():

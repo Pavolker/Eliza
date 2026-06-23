@@ -1,61 +1,113 @@
 import asyncio
 import os
 import sys
-from agent import get_agent_config, ROGERIAN_PERSONA
-from google.antigravity import Agent
+from dotenv import load_dotenv
+import asyncpg
+from agent import OpenRouterAgent
 
-async def run_test():
+load_dotenv()
+
+async def test_agent():
     print("==================================================")
-    print("Iniciando testes de conversação da ELIZA 2026")
+    print("Iniciando testes de conversação da ELIZA 2026 (OpenRouter)")
     print("==================================================")
     
-    # 1. Verifica a chave de API
-    api_key = os.environ.get("GEMINI_API_KEY")
+    # 1. Verifica chave de API do OpenRouter
+    api_key = os.getenv("OPENROUTER_API_KEY")
     if not api_key:
-        print("[AVISO] GEMINI_API_KEY não encontrada nas variáveis de ambiente.")
-        print("Certifique-se de definir a chave no seu ambiente ou em um arquivo .env.")
-        print("Tentando continuar (pode falhar se o SDK não encontrar credenciais)...")
+        print("[ERRO] OPENROUTER_API_KEY não encontrada no ambiente ou .env.")
+        sys.exit(1)
     else:
-        print("[OK] GEMINI_API_KEY detectada no ambiente.")
-
-    # 2. Testa a inicialização e diálogo do agente
-    conversation_id = "test_session_99"
-    config = get_agent_config(conversation_id=conversation_id, save_dir="test_conversations")
+        print("[OK] OPENROUTER_API_KEY detectada.")
+        
+    # 2. Configura banco de dados (se disponível)
+    database_url = os.getenv("DATABASE_URL") or "postgresql://eliza:Eliza2026DB!@localhost:5432/eliza"
+    pool = None
+    try:
+        connection_url = database_url.replace("postgresql+asyncpg://", "postgresql://")
+        print(f"Tentando conectar ao banco de dados para testes: {connection_url}")
+        pool = await asyncpg.create_pool(connection_url, timeout=3.0)
+        
+        # Cria a tabela de teste
+        async with pool.acquire() as conn:
+            await conn.execute("""
+                CREATE TABLE IF NOT EXISTS messages (
+                    id SERIAL PRIMARY KEY,
+                    conversation_id VARCHAR(100) NOT NULL,
+                    role VARCHAR(20) NOT NULL,
+                    content TEXT NOT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
+            """)
+        print("[OK] Conexão com o banco de dados realizada com sucesso.")
+    except Exception as e:
+        print(f"[AVISO] Não foi possível conectar ao banco de dados ({e}). Executando testes sem banco.")
+        
+    # 3. Inicializa o agente
+    session_id = "test_or_session_123"
+    print(f"\nInicializando OpenRouterAgent com session_id: {session_id}")
+    agent = OpenRouterAgent(conversation_id=session_id, pool=pool)
     
+    # Carrega histórico
+    await agent.load_history()
+    print(f"Histórico inicial carregado: {len(agent.messages)} mensagens (incluindo persona).")
+    
+    # 4. Envia prompts de teste
     test_prompts = [
-        "Estou muito cansado e triste com o meu trabalho hoje.",
-        "Minha mãe sempre me disse que eu deveria ser mais forte.",
-        "Você é um computador ou uma pessoa real?"
+        "Estou muito cansado hoje. Sinto que meu trabalho está me esgotando completamente.",
+        "Sim, tenho muitos conflitos com meu chefe porque ele cobra metas absurdas que vão contra o que eu acredito.",
+        "Gostei dessa ideia de equilibrar. Como posso colocar isso em prática no meu dia a dia?",
+        "Fez sentido. Acho que posso começar definindo um limite de horário para responder e-mails e respirar um pouco antes de responder a cobranças."
     ]
     
     try:
-        async with Agent(config) as agent:
-            print("\nSessão do agente iniciada com sucesso.")
+        for i, prompt in enumerate(test_prompts, 1):
+            print(f"\n[Usuário {i}]: {prompt}")
+            print("[ELIZA 2026 (Resposta streaming)]: ", end="", flush=True)
             
-            for i, prompt in enumerate(test_prompts, 1):
-                print(f"\n[Usuário {i}]: {prompt}")
-                print("[ELIZA 2026 (Pensamentos)]: ", end="", flush=True)
+            # Executa chat com streaming
+            response_tokens = []
+            async for token in agent.chat(prompt):
+                print(token, end="", flush=True)
+                response_tokens.append(token)
+            print()
+            
+        print("\n[OK] Diálogo de teste concluído com sucesso.")
+        
+        # 5. Verifica persistência no banco (se pool estiver conectado)
+        if pool:
+            print("\nVerificando mensagens salvas no banco de dados...")
+            async with pool.acquire() as conn:
+                rows = await conn.fetch(
+                    "SELECT role, content FROM messages WHERE conversation_id = $1 ORDER BY id ASC",
+                    session_id
+                )
+                print(f"Total de mensagens no banco para {session_id}: {len(rows)}")
+                for row in rows:
+                    print(f" - [{row['role'].upper()}]: {row['content']}")
                 
-                # Realiza o chat e exibe pensamentos
-                response = await agent.chat(prompt)
+                # Opcional: Limpar as mensagens de teste
+                await conn.execute("DELETE FROM messages WHERE conversation_id = $1", session_id)
+                print("Mensagens de teste limpas do banco.")
                 
-                # Exibe pensamentos se houver
-                async for thought in response.thoughts:
-                    print(thought, end="", flush=True)
-                print()
-                
-                # Exibe resposta final
-                print("[ELIZA 2026 (Resposta)]: ", end="")
-                async for token in response:
-                    print(token, end="", flush=True)
-                print()
+        else:
+            print("\n[AVISO] Pulando verificação do banco de dados (banco offline).")
+            print("Mensagens em memória do agente:")
+            for msg in agent.messages[1:]:  # Ignora a persona rogeriana
+                print(f" - [{msg['role'].upper()}]: {msg['content']}")
                 
         print("\n==================================================")
         print("Testes concluídos com sucesso!")
         print("==================================================")
+        
     except Exception as e:
-        print(f"\n[ERRO] Ocorreu uma falha durante o teste do agente: {e}")
+        print(f"\n[ERRO] Ocorreu uma falha durante os testes do agente: {e}")
+        if pool:
+            await pool.close()
         sys.exit(1)
+    finally:
+        if pool:
+            await pool.close()
 
 if __name__ == "__main__":
-    asyncio.run(run_test())
+    asyncio.run(test_agent())

@@ -692,23 +692,22 @@ async def websocket_endpoint(websocket: WebSocket, conversation_id: str):
                 if oc_summary:
                     oc_context = (
                         f"[O usuário acabou de completar o exercício de autoconhecimento '{oc_summary['title']}'.\n"
-                        f"Ele fez {len(oc_summary['choices'])} escolhas. Resumo das inclinações: {oc_summary['summary']}.\n"
+                        f"Resumo das inclinações: {oc_summary['summary']}.\n"
                         f"Não mencione 'exercício', 'app' ou 'sistema'. Reaja naturalmente, como se tivesse percebido "
                         f"uma mudança sutil no jeito dele falar. Pergunte como ele se sente após essa reflexão.]"
                     )
-                    # Injeta o contexto como mensagem do sistema antes da resposta
-                    agent.messages.append({"role": "user", "content": oc_context})
-                
-                await websocket.send_json({"type": "typing", "content": True})
-                try:
-                    async for token in agent.chat(oc_context):
-                        await websocket.send_json({"type": "token", "content": token})
-                    await websocket.send_json({"type": "typing", "content": False})
-                except Exception:
-                    await websocket.send_json({"type": "typing", "content": False})
-                
-                await websocket.send_json({"type": "emotion", "content": "calm"})
-                await websocket.send_json({"type": "end"})
+                    
+                    await websocket.send_json({"type": "typing", "content": True})
+                    try:
+                        # chat() já insere a mensagem no histórico e persiste no banco
+                        async for token in agent.chat(oc_context):
+                            await websocket.send_json({"type": "token", "content": token})
+                        await websocket.send_json({"type": "typing", "content": False})
+                    except Exception:
+                        await websocket.send_json({"type": "typing", "content": False})
+                    
+                    await websocket.send_json({"type": "emotion", "content": "calm"})
+                    await websocket.send_json({"type": "end"})
                 continue
             
             # 1. Verifica gatilhos de cards no prompt do usuário

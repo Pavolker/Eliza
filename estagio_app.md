@@ -1,7 +1,7 @@
 # ELIZA 2026 — Registro de Estágio e Arquitetura
 
-**Data:** 22 de Junho de 2026  
-**Versão:** 3.0 — Produção (Hetzner + Netlify + HTTPS)  
+**Data:** 23 de Junho de 2026
+**Versão:** 3.1 — Split-Screen + Cards Autoconhecimento + PostgreSQL Persistência
 **Status:** Online
 
 ---
@@ -129,11 +129,13 @@ Pavolker/Eliza/
 /opt/eliza/
 ├── .env                      # OPENROUTER_API_KEY
 ├── docker-compose.yml        # postgres + eliza-api
-├── Dockerfile                # Python 3.11 slim
-├── requirements.txt
-├── agent.py
-├── main.py
-├── index.html / app.js / style.css
+├── Dockerfile                # Python 3.11 slim + libpq-dev
+├── requirements.txt          # openai, fastapi, uvicorn, asyncpg
+├── agent.py                  # OpenRouterAgent + persona expandida + pool DB
+├── main.py                   # FastAPI + cards + foyers + PostgreSQL lifespan
+├── index.html                # Split-screen (chat + cards)
+├── app.js                    # Cards dinâmicos + foyer progress + filtros
+├── style.css                 # Layout split-screen + temas
 ```
 
 ### SSL
@@ -156,6 +158,7 @@ Renovação: automática (Let's Encrypt ACME)
 | 21/06 | 2.0 | Migração: Gemini → OpenRouter (gpt-4o-mini) |
 | 22/06 | 2.1 | Docker + PostgreSQL + Deploy Hetzner |
 | 22/06 | 3.0 | Caddy SSL + Netlify + domínio próprio → Produção |
+| 23/06 | 3.1 | Split-screen, 27 cards autoconhecimento, PostgreSQL persistência, persona expandida |
 
 ### O que mudou na migração Gemini → OpenRouter
 
@@ -171,40 +174,46 @@ Renovação: automática (Let's Encrypt ACME)
 
 ## 8. Funcionalidades
 
-- [x] Persona rogeriana (Carl Rogers) — escuta ativa, sem julgamentos
+- [x] Persona rogeriana expandida (metodologia CNA, Foyers, Attention Active)
 - [x] WebSocket com streaming de tokens em tempo real
 - [x] Indicador visual "sintonizando..."
-- [x] Análise de sentimento local (5 emoções: calma, alegria, tristeza, raiva, ansiedade)
+- [x] Análise de sentimento local com negação contextual (5 emoções, gênero/plural)
 - [x] Temas de cor dinâmicos por emoção (CSS transitions)
+- [x] Split-screen: chat (esquerda) + painel de cards (direita)
+- [x] 27 cards de autoconhecimento ativados por keywords
+- [x] 3 Foyers com barra de progresso (Interne, Externe, Stratégique)
+- [x] Conexões entre cards, saltos evolutivos e reflexões
+- [x] Filtros de cards por foyer
+- [x] Expandir/arquivar cards
 - [x] Fallback regex clássico da ELIZA (português)
 - [x] Reconexão automática com backoff exponencial
-- [x] Reset de conversa (limpa histórico e sessão)
-- [x] Orbe animado de respiração (CSS)
+- [x] Reset de conversa (limpa chat + cards)
+- [x] Orbe animado de respiração no avatar do agente
 - [x] Interface glassmorphism
 - [x] Responsivo mobile-first
 - [x] HTTPS/WSS com Let's Encrypt (Caddy)
 - [x] Deploy automatizado (git push → Netlify)
+- [x] Persistência de conversas no PostgreSQL com asyncpg
+- [x] Detecção de abas simultâneas (desconecta aba antiga)
 
 ---
 
 ## 9. Pendências e Próximos Passos
 
 ### Críticas
-- [ ] **Persistência de conversas no PostgreSQL** — schema pronto, aguardando implementação
 - [ ] **Auth de usuários** — cadastro/login para múltiplos clientes
-- [ ] **Histórico por usuário** — recuperar conversas anteriores
+- [ ] **Pagamento recorrente** — Stripe para assinaturas mensais
 
 ### Funcionais
-- [ ] **Cards de sugestão de temas** — página com conteúdo curado
-- [ ] **Pagamento recorrente** — Stripe para assinaturas mensais
+- [ ] **Exportação de cards** — PDF com temas descobertos
 - [ ] **Troca dinâmica de modelo LLM** — selecionar via UI
 
 ### Melhorias
 - [ ] **Integração de voz** — Web Speech API (STT/TTS)
+- [ ] **Expansão de conexões e saltos** — mais padrões entre cards
 - [ ] **Expansão do fallback regex** — 100+ regras do Lisp original
 - [ ] **Áudio ambiente dinâmico** — sons adaptativos por emoção
 - [ ] **Compactação de contexto** — resumir histórico para evitar estouro de tokens
-- [ ] **Correção de abas simultâneas** — `conversationId` compartilhado via localStorage
 
 ---
 

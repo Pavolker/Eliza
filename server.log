@@ -1,0 +1,303 @@
+INFO:     Will watch for changes in these directories: ['/Users/APLICATIVOS GERAIS/ELIZA']
+INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
+INFO:     Started reloader process [73207] using WatchFiles
+INFO:     Started server process [73238]
+INFO:     Waiting for application startup.
+INFO:eliza.main:Conectando ao banco de dados: postgresql://eliza:Eliza2026DB!@localhost:5432/eliza
+WARNING:eliza.main:Erro ao inicializar banco de dados: role "eliza" does not exist. Executando com histórico em memória.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:55408 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55423 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55423 - "GET /style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55423 - "GET /app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55427 - "WebSocket /ws/7f418bf293874ca3a1cf0670d06c805e" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:55434 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:httpx:HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:55529 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55617 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55691 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55695 - "GET /style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55698 - "GET /app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55720 - "WebSocket /ws/new" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:55725 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55768 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:watchfiles.main:1 change detected
+INFO:     127.0.0.1:55875 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55964 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:httpx:HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:56020 - "GET / HTTP/1.1" 200 OK
+INFO:eliza.main:Sessão 3f97009621af489986d4c4023707965c desconectada do WebSocket.
+INFO:     connection closed
+INFO:     127.0.0.1:56023 - "WebSocket /ws/3f97009621af489986d4c4023707965c" [accepted]
+INFO:     connection open
+INFO:httpx:HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:56021 - "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56082 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56410 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:watchfiles.main:1 change detected
+WARNING:  WatchFiles detected changes in 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:eliza.main:Sessão 7f418bf293874ca3a1cf0670d06c805e desconectada do WebSocket.
+INFO:eliza.main:Sessão 3f97009621af489986d4c4023707965c desconectada do WebSocket.
+INFO:     connection closed
+INFO:     connection closed
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [73238]
+INFO:     Started server process [75021]
+INFO:     Waiting for application startup.
+INFO:eliza.main:Conectando ao banco de dados: postgresql://eliza:Eliza2026DB!@localhost:5432/eliza
+WARNING:eliza.main:Erro ao inicializar banco de dados: role "eliza" does not exist. Executando com histórico em memória.
+INFO:     Application startup complete.
+INFO:watchfiles.main:3 changes detected
+INFO:     127.0.0.1:56545 - "WebSocket /ws/3f97009621af489986d4c4023707965c" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:56551 - "WebSocket /ws/7f418bf293874ca3a1cf0670d06c805e" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:56714 - "GET / HTTP/1.1" 200 OK
+INFO:eliza.main:Sessão 3f97009621af489986d4c4023707965c desconectada do WebSocket.
+INFO:     connection closed
+INFO:     127.0.0.1:56717 - "WebSocket /ws/3f97009621af489986d4c4023707965c" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:56721 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:eliza.main:Processando mensagem: não sei realmente o que sou eu
+INFO:eliza.main:Triggers detectados: []
+INFO:httpx:HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:56715 - "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 Not Found
+INFO:eliza.main:Sessão 3f97009621af489986d4c4023707965c desconectada do WebSocket.
+INFO:     connection closed
+INFO:     127.0.0.1:56805 - "GET / HTTP/1.1" 200 OK
+INFO:eliza.main:Sessão 7f418bf293874ca3a1cf0670d06c805e desconectada do WebSocket.
+INFO:     connection closed
+INFO:     127.0.0.1:56807 - "WebSocket /ws/7f418bf293874ca3a1cf0670d06c805e" [accepted]
+INFO:     connection open
+INFO:eliza.main:Processando mensagem: não sei quem sou eu
+INFO:eliza.main:Triggers detectados: []
+INFO:httpx:HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:56821 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56873 - "GET /apple-touch-icon-precomposed.png HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56874 - "GET /apple-touch-icon.png HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56875 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56893 - "WebSocket /ws/3f97009621af489986d4c4023707965c" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:56890 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:eliza.main:Processando mensagem: nao sei quem sou eu
+INFO:eliza.main:Triggers detectados: []
+INFO:httpx:HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:56891 - "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57074 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:eliza.main:Processando mensagem: Eu sempre aceito tudo que me pedem, não consigo dizer não"
+INFO:eliza.main:Triggers detectados: ['limites']
+INFO:httpx:HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:57402 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57490 - "GET /oc/config/limites HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57490 - "GET /oc/state/3f97009621af489986d4c4023707965c/limites HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57490 - "POST /oc/save HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57490 - "POST /oc/save HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57490 - "POST /oc/save HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57510 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57577 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57679 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:1 change detected
+WARNING:  WatchFiles detected changes in 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:eliza.main:Sessão 3f97009621af489986d4c4023707965c desconectada do WebSocket.
+INFO:eliza.main:Sessão 7f418bf293874ca3a1cf0670d06c805e desconectada do WebSocket.
+INFO:     connection closed
+INFO:     connection closed
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [75021]
+INFO:     Started server process [76630]
+INFO:     Waiting for application startup.
+INFO:eliza.main:Conectando ao banco de dados: postgresql://eliza:Eliza2026DB!@localhost:5432/eliza
+WARNING:eliza.main:Erro ao inicializar banco de dados: role "eliza" does not exist. Executando com histórico em memória.
+INFO:     Application startup complete.
+INFO:watchfiles.main:3 changes detected
+INFO:     127.0.0.1:57769 - "WebSocket /ws/3f97009621af489986d4c4023707965c" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:57771 - "WebSocket /ws/7f418bf293874ca3a1cf0670d06c805e" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:57775 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57871 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57932 - "GET / HTTP/1.1" 200 OK
+INFO:eliza.main:Sessão 3f97009621af489986d4c4023707965c desconectada do WebSocket.
+INFO:     connection closed
+INFO:     127.0.0.1:57936 - "WebSocket /ws/3f97009621af489986d4c4023707965c" [accepted]
+INFO:     connection open
+INFO:eliza.main:Processando mensagem: Eu sempre aceito tudo que me pedem, não consigo dizer não
+INFO:eliza.main:Triggers detectados: ['limites']
+INFO:httpx:HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:57934 - "GET /oc/config/limites HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57934 - "GET /oc/state/3f97009621af489986d4c4023707965c/limites HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57934 - "POST /oc/save HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57934 - "POST /oc/save HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57934 - "POST /oc/save HTTP/1.1" 200 OK
+INFO:eliza.main:Processando mensagem: __oc_completed__:limites
+INFO:eliza.main:Triggers detectados: []
+INFO:httpx:HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:57955 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:watchfiles.main:2 changes detected
+WARNING:  WatchFiles detected changes in 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:eliza.main:Sessão 3f97009621af489986d4c4023707965c desconectada do WebSocket.
+INFO:eliza.main:Sessão 7f418bf293874ca3a1cf0670d06c805e desconectada do WebSocket.
+INFO:     connection closed
+INFO:     connection closed
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [76630]
+INFO:     Started server process [77145]
+INFO:     Waiting for application startup.
+INFO:eliza.main:Conectando ao banco de dados: postgresql://eliza:Eliza2026DB!@localhost:5432/eliza
+WARNING:eliza.main:Erro ao inicializar banco de dados: role "eliza" does not exist. Executando com histórico em memória.
+INFO:     Application startup complete.
+INFO:watchfiles.main:3 changes detected
+INFO:     127.0.0.1:58031 - "WebSocket /ws/3f97009621af489986d4c4023707965c" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:58033 - "WebSocket /ws/7f418bf293874ca3a1cf0670d06c805e" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:58066 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58142 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58227 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58326 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:watchfiles.main:1 change detected
+INFO:     127.0.0.1:58391 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58470 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58557 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58632 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58708 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58785 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58858 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58937 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59021 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59096 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59178 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59251 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59325 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59404 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59488 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59562 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59641 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59712 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59804 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59889 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59950 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60032 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60103 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60188 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60266 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60342 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60421 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60494 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60574 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60658 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60725 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60809 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60890 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60961 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61048 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61118 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61199 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61277 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61350 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61430 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61498 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61565 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61642 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61718 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61794 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61907 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61965 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62066 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62145 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62212 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62284 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62366 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62428 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62513 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62599 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62652 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62725 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62809 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62863 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62935 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62997 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63062 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63128 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63206 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63279 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63338 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63408 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63476 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63540 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63615 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63685 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63749 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63817 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63896 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63966 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64048 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64107 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64178 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64262 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64337 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64410 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64480 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64546 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64636 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64702 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64769 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64842 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64919 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:65002 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:65068 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:65129 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:65205 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:65271 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:65352 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:65431 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:65506 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49207 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49264 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49342 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49425 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49495 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49592 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49661 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49737 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49814 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49890 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49955 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50031 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50110 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50190 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50263 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50331 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50408 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50481 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50554 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50635 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50700 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50777 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50850 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50926 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51003 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51069 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51145 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51223 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:eliza.main:Sessão 7f418bf293874ca3a1cf0670d06c805e desconectada do WebSocket.
+INFO:     connection closed
+INFO:eliza.main:Sessão 3f97009621af489986d4c4023707965c desconectada do WebSocket.
+INFO:     connection closed
+INFO:     127.0.0.1:51309 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:watchfiles.main:1 change detected
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [77145]
+INFO:     Stopping reloader process [73207]

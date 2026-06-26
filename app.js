@@ -32,18 +32,30 @@ document.addEventListener('DOMContentLoaded', () => {
     // Recupera ou cria um ID de conversa persistente para o usuário
     let conversationId = localStorage.getItem('eliza_session_id') || 'new';
 
+    const DEFAULT_API_BASE_URL = window.__ELIZA_API_BASE_URL || (
+        window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? `${window.location.protocol}//${window.location.host}`
+            : 'https://eliza.mdh-hability.com'
+    );
+    const API_BASE_URL = DEFAULT_API_BASE_URL.replace(/\/$/, '');
+
+    function apiUrl(path) {
+        return `${API_BASE_URL}${path.startsWith('/') ? path : `/${path}`}`;
+    }
+
+    function getWebSocketUrl() {
+        const api = new URL(API_BASE_URL);
+        const wsProtocol = api.protocol === 'https:' ? 'wss:' : 'ws:';
+        return `${wsProtocol}//${api.host}/ws/${conversationId}`;
+    }
+
     // Inicializa o tema padrão como Calm
     document.body.className = 'theme-calm';
 
     // Função de Conexão WebSocket com Reconexão Automática
     function connectWebSocket() {
         shouldReconnect = true;
-        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-        const protocol = isLocalhost ? (window.location.protocol === 'https:' ? 'wss' : 'ws') : 'wss';
-        const wsHost = isLocalhost ? window.location.host : 'eliza.mdh-hability.com';
-        const wsUrl = `${protocol}://${wsHost}/ws/${conversationId}`;
-        
-        socket = new WebSocket(wsUrl);
+        socket = new WebSocket(getWebSocketUrl());
 
         socket.onopen = () => {
             console.log('Conectado ao consultório da ELIZA.');
@@ -331,8 +343,8 @@ document.addEventListener('DOMContentLoaded', () => {
             currentResponseElement = contentDiv;
         }
         
-        // Adiciona o token ao conteúdo da mensagem
-        currentResponseElement.innerHTML += token;
+        // Adiciona o token como texto puro para evitar injeção de HTML.
+        currentResponseElement.textContent += token;
         scrollToBottom();
     }
 
@@ -415,6 +427,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (resetButton) {
         resetButton.addEventListener('click', () => {
             if (confirm('Deseja reiniciar a conversa e limpar o histórico?')) {
+                const previousConversationId = conversationId;
                 localStorage.removeItem('eliza_session_id');
                 conversationId = 'new';
                 
@@ -436,8 +449,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateFoyerProgress();
                 
                 // Limpa os OCs do banco de dados
-                if (conversationId && conversationId !== 'new') {
-                    fetch(`https://eliza.mdh-hability.com/oc/reset/${conversationId}`, { method: 'DELETE' })
+                if (previousConversationId && previousConversationId !== 'new') {
+                    fetch(apiUrl(`/oc/reset/${previousConversationId}`), { method: 'DELETE' })
                         .catch(() => {});
                 }
                 
@@ -456,18 +469,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let ocModalState = null;
 
     async function openOCModal(ocId, cardData) {
-        const host = conversationId && conversationId !== 'new' 
-            ? '' : '/..'; // mesmo domínio no Netlify, mas aponta pro backend
-        
         try {
             // Busca a configuração do OC
-            const configRes = await fetch(`https://eliza.mdh-hability.com/oc/config/${ocId}`);
+            const configRes = await fetch(apiUrl(`/oc/config/${ocId}`));
             if (!configRes.ok) return; // OC sem config — não abre modal
             const config = await configRes.json();
             if (config.error) return;
             
             // Busca o estado atual
-            const stateRes = await fetch(`https://eliza.mdh-hability.com/oc/state/${conversationId}/${ocId}`);
+            const stateRes = await fetch(apiUrl(`/oc/state/${conversationId}/${ocId}`));
             const state = await stateRes.json();
             
             ocModalState = {
@@ -566,7 +576,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function saveOCState(completed) {
         const s = ocModalState;
         try {
-            await fetch('https://eliza.mdh-hability.com/oc/save', {
+            await fetch(apiUrl('/oc/save'), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -617,7 +627,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.querySelector('.oc-terminar-btn').addEventListener('click', closeOCModal);
         modal.querySelector('.oc-mosaic-reset').addEventListener('click', async () => {
             // Zera o estado local e no banco
-            await fetch(`https://eliza.mdh-hability.com/oc/reset/${conversationId}`, { method: 'DELETE' });
+            await fetch(apiUrl(`/oc/reset/${conversationId}`), { method: 'DELETE' });
             const cardEl = document.querySelector(`.theme-card[data-id="${s.ocId}"]`);
             if (cardEl) {
                 cardEl.classList.remove('status-explorado');
@@ -651,9 +661,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
             
-            // Notifica a ELIZA pelo WebSocket
+            // Notifica a ELIZA pelo WebSocket com os dados do OC
             if (socket && socket.readyState === WebSocket.OPEN) {
-                socket.send(`__oc_completed__:${ocModalState.ocId}`);
+                const ocData = {
+                    type: 'oc_completed',
+                    oc_id: ocModalState.ocId,
+                    title: ocModalState.config.title,
+                    choices: ocModalState.choices,
+                    force_pair: ocModalState.config.force_pair,
+                    scenes: ocModalState.config.scenes
+                };
+                socket.send(JSON.stringify(ocData));
                 showTypingIndicator();
                 disableInput();
             }

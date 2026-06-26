@@ -240,6 +240,760 @@ OC_CONFIGS = {
             "left": "🤲",
             "right": "✋"
         }
+    },
+    "reacoes": {
+        "id": "reacoes",
+        "title": "Reações recorrentes",
+        "force_pair": ["Reagir", "Refletir"],
+        "scenes": [
+            {
+                "text": "Durante uma reunião, um colega critica abertamente sua parte de um projeto comum.",
+                "domain": "Conflito",
+                "domain_color": "#c75a5a",
+                "options": ["Responde de imediato justificando seu ponto com firmeza", "Ouve calado, anota os pontos e analisa antes de responder"]
+            },
+            {
+                "text": "Um familiar próximo faz um comentário irônico sobre suas escolhas recentes na vida pessoal.",
+                "domain": "Família",
+                "domain_color": "#c4956a",
+                "options": ["Retruca com ironia para se defender na hora", "Respira fundo, ignora o tom e decide conversar com calma depois"]
+            },
+            {
+                "text": "Você recebe a notícia inesperada de que a empresa cancelou uma iniciativa em que você trabalhou meses.",
+                "domain": "Trabalho",
+                "domain_color": "#4a6fa5",
+                "options": ["Expressa sua frustração publicamente na mesma hora", "Afasta-se da mesa para digerir a notícia e pensar nos próximos passos"]
+            }
+        ],
+        "mosaic_icons": {
+            "left": "⚡",
+            "right": "⏳"
+        }
+    },
+    "sensacoes": {
+        "id": "sensacoes",
+        "title": "Sensações do corpo",
+        "force_pair": ["Ignorar", "Atentar"],
+        "scenes": [
+            {
+                "text": "Em meio a uma discussão tensa de trabalho, você sente um aperto no peito e o coração acelerar.",
+                "domain": "Conflito",
+                "domain_color": "#c75a5a",
+                "options": ["Foca na conversa e continua falando apesar do desconforto", "Faz uma pausa mental para notar de onde vem essa opressão física"]
+            },
+            {
+                "text": "No final de um dia exaustivo com tarefas acumuladas da família, suas costas e ombros ardem.",
+                "domain": "Família",
+                "domain_color": "#c4956a",
+                "options": ["Continua os afazeres domésticos sem parar", "Para por 5 minutos para esticar o corpo e respirar fundo"]
+            },
+            {
+                "text": "Ao se preparar para um encontro importante, uma sensação de friozinho na barriga te domina.",
+                "domain": "Relação",
+                "domain_color": "#b06e8a",
+                "options": ["Tenta se distrair com o celular para esquecer o frio na barriga", "Fecha os olhos e deixa a energia da expectativa fluir no corpo"]
+            }
+        ],
+        "mosaic_icons": {
+            "left": "🙈",
+            "right": "🧘"
+        }
+    },
+    "ritmos": {
+        "id": "ritmos",
+        "title": "Ritmos do seu corpo",
+        "force_pair": ["Forçar", "Respeitar"],
+        "scenes": [
+            {
+                "text": "Você já trabalhou 10 horas seguidas e o sono começa a pesar, mas ainda faltam emails para responder.",
+                "domain": "Trabalho",
+                "domain_color": "#4a6fa5",
+                "options": ["Toma mais um café para terminar as pendências hoje", "Fecha o notebook e deixa o restante para o dia seguinte"]
+            },
+            {
+                "text": "No fim de semana, você planejou limpar a casa inteira, mas acorda com uma forte dor de cabeça.",
+                "domain": "Família",
+                "domain_color": "#c4956a",
+                "options": ["Toma um analgésico e começa a faxina mesmo assim", "Deita-se no quarto escuro e adia a limpeza para quando melhorar"]
+            },
+            {
+                "text": "Seus amigos te convidam para uma festa animada, mas você sente que precisa de um momento de silêncio doméstico.",
+                "domain": "Social",
+                "domain_color": "#5a9e9e",
+                "options": ["Força-se a ir para não decepcionar o grupo", "Agradece o convite e fica em casa recarregando as energias"]
+            }
+        ],
+        "mosaic_icons": {
+            "left": "🏃",
+            "right": "🍃"
+        }
+    },
+    "conflito": {
+        "id": "conflito",
+        "title": "Como entra em conflito",
+        "force_pair": ["Evitar", "Enfrentar"],
+        "scenes": [
+            {
+                "text": "Um colega de equipe assume o crédito por uma ideia sua na frente da diretoria.",
+                "domain": "Trabalho",
+                "domain_color": "#4a6fa5",
+                "options": ["Deixa passar para não criar um clima ruim", "Pede a palavra educadamente e pontua sua contribuição no projeto"]
+            },
+            {
+                "text": "Seu parceiro(a) faz algo que te magoa profundamente na frente de amigos comuns.",
+                "domain": "Relação",
+                "domain_color": "#b06e8a",
+                "options": ["Finge que está tudo bem para evitar cena em público", "Chama a pessoa de canto e expressa seu descontentamento na hora"]
+            },
+            {
+                "text": "Em uma reunião de condomínio ou grupo familiar, um parente faz acusações injustas ao seu respeito.",
+                "domain": "Família",
+                "domain_color": "#c4956a",
+                "options": ["Retira-se do local sem discutir para não piorar as coisas", "Responde à acusação de frente e exige respeito dos envolvidos"]
+            }
+        ],
+        "mosaic_icons": {
+            "left": "🛡️",
+            "right": "⚔️"
+        }
+    },
+    "dependencias": {
+        "id": "dependencias",
+        "title": "Dependências que te prendem",
+        "force_pair": ["Anexar", "Soltar"],
+        "scenes": [
+            {
+                "text": "Você desenhou uma proposta de projeto excelente, mas hesita em enviar antes que seu mentor a valide.",
+                "domain": "Trabalho",
+                "domain_color": "#4a6fa5",
+                "options": ["Guarda o arquivo esperando o aval, mesmo atrasando o prazo", "Envia a proposta confiando na qualidade do seu trabalho autônomo"]
+            },
+            {
+                "text": "Um amigo próximo parece frio ou distante nas mensagens hoje e você fica ansioso por uma resposta calorosa.",
+                "domain": "Social",
+                "domain_color": "#5a9e9e",
+                "options": ["Manda mensagens extras perguntando se fez algo errado", "Dá espaço ao amigo e segue seu dia sem focar nisso"]
+            },
+            {
+                "text": "Você sente o hábito de tomar uma taça de vinho ou usar redes sociais para relaxar sempre que o estresse aperta.",
+                "domain": "Saúde",
+                "domain_color": "#5a9e7c",
+                "options": ["Recorre imediatamente ao hábito para aliviar a tensão", "Decide passar a noite sem isso, encarando o tédio ou o estresse"]
+            }
+        ],
+        "mosaic_icons": {
+            "left": "🔗",
+            "right": "🕊️"
+        }
+    },
+    "praticas": {
+        "id": "praticas",
+        "title": "Práticas reflexivas",
+        "force_pair": ["Abandonar", "Manter"],
+        "scenes": [
+            {
+                "text": "Sua rotina matinal está apertada com reuniões marcadas mais cedo, reduzindo seu tempo de meditação/leitura habitual.",
+                "domain": "Trabalho",
+                "domain_color": "#4a6fa5",
+                "options": ["Pula a prática para garantir que chegará adiantado", "Acorda 15 minutos mais cedo para manter a prática antes do trabalho"]
+            },
+            {
+                "text": "Nas férias familiares, todos estão agitados programando passeios intensos o dia inteiro.",
+                "domain": "Família",
+                "domain_color": "#c4956a",
+                "options": ["Segue o fluxo coletivo e deixa seu caderno de notas/rotina de lado", "Explica ao grupo que precisa de 20 minutos de isolamento de manhã"]
+            },
+            {
+                "text": "Você está de mau humor ou irritado hoje e a ideia de se exercitar ou escrever parece cansativa.",
+                "domain": "Saúde",
+                "domain_color": "#5a9e7c",
+                "options": ["Deixa a prática para lá e assiste televisão", "Obriga-se a caminhar ou escrever um pouco mesmo sem vontade"]
+            }
+        ],
+        "mosaic_icons": {
+            "left": "❌",
+            "right": "🔄"
+        }
+    },
+    "observar": {
+        "id": "observar",
+        "title": "Capacidade de se observar",
+        "force_pair": ["Envolver", "Distanciar"],
+        "scenes": [
+            {
+                "text": "Você se vê no meio de uma discussão acalorada sobre política no almoço de domingo.",
+                "domain": "Família",
+                "domain_color": "#c4956a",
+                "options": ["Argumenta com paixão, sentindo a raiva subir no peito", "Presta atenção em como sua própria respiração ficou curta e decide desacelerar"]
+            },
+            {
+                "text": "O prazo de uma entrega importante se aproxima e o pânico começa a se instalar.",
+                "domain": "Trabalho",
+                "domain_color": "#4a6fa5",
+                "options": ["Deixa-se engolir pelo desespero e trabalha de forma caótica", "Para e anota mentalmente: 'Estou sentindo ansiedade. É só um padrão'"]
+            },
+            {
+                "text": "Ao receber um elogio sincero de alguém de quem você gosta, você sente uma pontada de desconfiança imediata.",
+                "domain": "Relação",
+                "domain_color": "#b06e8a",
+                "options": ["Recusa o elogio mentalmente achando que a pessoa quer algo", "Nota seu desconforto com a validação alheia e investiga a origem disso"]
+            }
+        ],
+        "mosaic_icons": {
+            "left": "🌀",
+            "right": "👁️"
+        }
+    },
+    "raizes": {
+        "id": "raizes",
+        "title": "Raízes culturais",
+        "force_pair": ["Manter", "Questionar"],
+        "scenes": [
+            {
+                "text": "Sua família tradicional exige sua presença em um ritual religioso com o qual você já não se identifica.",
+                "domain": "Família",
+                "domain_color": "#c4956a",
+                "options": ["Comparece ao evento para manter a paz e a tradição", "Comunica educadamente que prefere não ir, mantendo sua coerência"]
+            },
+            {
+                "text": "No ambiente profissional, piadas ou expressões preconceituosas arraigadas na cultura local são ditas.",
+                "domain": "Trabalho",
+                "domain_color": "#4a6fa5",
+                "options": ["Fica calado ou sorri amarelo para não ser o chato do grupo", "Pontua firmemente que a piada ou termo não é aceitável hoje"]
+            },
+            {
+                "text": "Você se depara com a oportunidade de se mudar para o exterior, sabendo que isso exigirá abandonar costumes queridos.",
+                "domain": "Social",
+                "domain_color": "#5a9e9e",
+                "options": ["Recusa a oportunidade para manter-se fiel à sua terra e comunidade", "Aceita o desafio, disposto a questionar e reconstruir seus hábitos"]
+            }
+        ],
+        "mosaic_icons": {
+            "left": "🪵",
+            "right": "🌱"
+        }
+    },
+    "comunicacao": {
+        "id": "comunicacao",
+        "title": "Jeito de se comunicar",
+        "force_pair": ["Silenciar", "Expressar"],
+        "scenes": [
+            {
+                "text": "Seu parceiro(a) faz um comentário desagradável e você se sente chateado com o tom usado.",
+                "domain": "Relação",
+                "domain_color": "#b06e8a",
+                "options": ["Fica em silêncio e espera a chateação passar sozinha", "Diz claramente: 'O modo como falou agora me machucou'"]
+            },
+            {
+                "text": "Em uma reunião de condomínio, uma decisão arbitrária é tomada e você discorda totalmente da resolução.",
+                "domain": "Social",
+                "domain_color": "#5a9e9e",
+                "options": ["Guarda a discordância para si, evitando atritos públicos", "Ergue a mão e manifesta seu argumento contra a decisão"]
+            },
+            {
+                "text": "Você percebe um erro na planilha financeira apresentada por um colega na empresa.",
+                "domain": "Trabalho",
+                "domain_color": "#4a6fa5",
+                "options": ["Deixa que outra pessoa note ou resolve ignorar", "Chama o colega reservadamente e aponta o desvio com respeito"]
+            }
+        ],
+        "mosaic_icons": {
+            "left": "🤐",
+            "right": "📢"
+        }
+    },
+    "historias": {
+        "id": "historias",
+        "title": "Histórias que te formaram",
+        "force_pair": ["Repetir", "Transformar"],
+        "scenes": [
+            {
+                "text": "Seu filho(a) ou companheiro(a) comete um erro bobo e você sente o impulso de reagir com os mesmos gritos que ouvia do seu pai.",
+                "domain": "Família",
+                "domain_color": "#c4956a",
+                "options": ["Solta o grito na hora, repetindo o padrão de criação", "Respira fundo, rompe o impulso e conversa em tom calmo"]
+            },
+            {
+                "text": "Em um novo cargo de liderança, você enfrenta o desafio de delegar tarefas, mas sempre ouviu que 'se quer bem feito, faça você mesmo'.",
+                "domain": "Trabalho",
+                "domain_color": "#4a6fa5",
+                "options": ["Centraliza tudo em si mesmo, esgotando sua energia", "Confia na equipe, treina os outros e aprende a delegar responsabilidades"]
+            },
+            {
+                "text": "Diante de um término de relacionamento, você se vê querendo se isolar totalmente para não sofrer, como sempre fez.",
+                "domain": "Relação",
+                "domain_color": "#b06e8a",
+                "options": ["Fecha as portas para os amigos e entra em isolamento severo", "Procura sua rede de apoio e se permite ser acolhido na dor"]
+            }
+        ],
+        "mosaic_icons": {
+            "left": "🔁",
+            "right": "🦋"
+        }
+    },
+    "lacos": {
+        "id": "lacos",
+        "title": "Laços que te sustentam",
+        "force_pair": ["Aproximar", "Distanciar"],
+        "scenes": [
+            {
+                "text": "Você está passando por um momento de grande tristeza pessoal e seus amigos te chamam para conversar.",
+                "domain": "Social",
+                "domain_color": "#5a9e9e",
+                "options": ["Desabafa e aceita o convite deles para desanuviar a mente", "Diz que está ocupado e prefere lidar com a tristeza sozinho"]
+            },
+            {
+                "text": "Um familiar próximo começa a exigir mais atenção sua no momento em que você está focado em sua carreira.",
+                "domain": "Família",
+                "domain_color": "#c4956a",
+                "options": ["Abre espaço na agenda para jantar com o familiar com frequência", "Explica que precisa de foco agora e reduz as visitas temporariamente"]
+            },
+            {
+                "text": "Seu parceiro(a) propõe um final de semana inteiro colados, mas você queria um tempo sozinho para ler e refletir.",
+                "domain": "Relação",
+                "domain_color": "#b06e8a",
+                "options": ["Cede ao convite para ficarem juntos o tempo todo", "Explica seu desejo de solidão temporária e agenda o encontro depois"]
+            }
+        ],
+        "mosaic_icons": {
+            "left": "🫂",
+            "right": "🚪"
+        }
+    },
+    "valores": {
+        "id": "valores",
+        "title": "Valores que te guiam",
+        "force_pair": ["Comprometer", "Flexibilizar"],
+        "scenes": [
+            {
+                "text": "Seu superior no trabalho pede que você use um atalho ético duvidoso para garantir um contrato vital.",
+                "domain": "Trabalho",
+                "domain_color": "#4a6fa5",
+                "options": ["Recusa-se terminantemente a fazê-lo, assumindo o risco de demissão", "Ajusta o processo de forma sutil justificando que o resultado justifica o meio"]
+            },
+            {
+                "text": "Você prometeu estar presente na apresentação escolar do seu filho, mas uma oportunidade profissional única surge na mesma hora.",
+                "domain": "Família",
+                "domain_color": "#c4956a",
+                "options": ["Mantém o compromisso com a família e recusa o evento profissional", "Negocia com a família explicando o valor estratégico de comparecer ao evento"]
+            },
+            {
+                "text": "Um amigo íntimo pede que você minta para encobrir uma traição dele no relacionamento.",
+                "domain": "Relação",
+                "domain_color": "#b06e8a",
+                "options": ["Recusa mentir afirmando que a honestidade está acima de tudo", "Inventa uma desculpa simples para proteger o amigo e a amizade"]
+            }
+        ],
+        "mosaic_icons": {
+            "left": "💎",
+            "right": "🎋"
+        }
+    },
+    "feedbacks": {
+        "id": "feedbacks",
+        "title": "O que os outros te dizem",
+        "force_pair": ["Acolher", "Questionar"],
+        "scenes": [
+            {
+                "text": "Seu chefe aponta que suas apresentações de resultados costumam ser confusas ou prolixas.",
+                "domain": "Trabalho",
+                "domain_color": "#4a6fa5",
+                "options": ["Agradece a crítica e começa a estudar técnicas de síntese", "Reflete se a crítica faz sentido ou se é apenas uma preferência pessoal dele"]
+            },
+            {
+                "text": "Seu parceiro(a) diz que você anda muito egoísta nas decisões cotidianas do casal.",
+                "domain": "Relação",
+                "domain_color": "#b06e8a",
+                "options": ["Pede desculpas sinceras e se propõe a mudar de postura", "Pede exemplos concretos e avalia se a crítica não é exagerada"]
+            },
+            {
+                "text": "Um amigo comenta que você sempre desaparece quando a vida dele fica difícil.",
+                "domain": "Social",
+                "domain_color": "#5a9e9e",
+                "options": ["Reconhece sua falha na amizade e se faz mais presente", "Explica suas próprias limitações e questiona a cobrança dele"]
+            }
+        ],
+        "mosaic_icons": {
+            "left": "📥",
+            "right": "🔍"
+        }
+    },
+    "apego": {
+        "id": "apego",
+        "title": "Como você se apega",
+        "force_pair": ["Anexar", "Libertar"],
+        "scenes": [
+            {
+                "text": "Seu namorado(a) avisa que vai fazer uma viagem curta com amigos e você sente insegurança.",
+                "domain": "Relação",
+                "domain_color": "#b06e8a",
+                "options": ["Telefona e manda mensagens a cada poucas horas para saber como está", "Deseja boa viagem e foca em suas próprias atividades do final de semana"]
+            },
+            {
+                "text": "Um colega querido de equipe anuncia que vai pedir demissão para trabalhar na concorrência.",
+                "domain": "Trabalho",
+                "domain_color": "#4a6fa5",
+                "options": ["Tenta convencê-lo a ficar apelando para o lado emocional", "Dá os parabéns pela oportunidade e ajuda na transição do cargo"]
+            },
+            {
+                "text": "Seu melhor amigo de infância fez novos círculos sociais e agora convida você com menos frequência.",
+                "domain": "Social",
+                "domain_color": "#5a9e9e",
+                "options": ["Sente ciúmes e se afasta cobrando reciprocidade dele", "Compreende que os círculos mudam e mantém o afeto livre de cobranças"]
+            }
+        ],
+        "mosaic_icons": {
+            "left": "⚓",
+            "right": "🎈"
+        }
+    },
+    "modelos_afeto": {
+        "id": "modelos_afeto",
+        "title": "Modelos de afeto que repete",
+        "force_pair": ["Repetir", "Diversificar"],
+        "scenes": [
+            {
+                "text": "Você se percebe atraído por alguém que é indisponível emocionalmente, repetindo o histórico dos seus últimos namoros.",
+                "domain": "Relação",
+                "domain_color": "#b06e8a",
+                "options": ["Investe na conquista tentando 'salvar' a pessoa e mudar a situação", "Decide dar um passo atrás e buscar alguém pronto para um vínculo saudável"]
+            },
+            {
+                "text": "Seus pais demonstravam afeto apenas por cobrança de desempenho escolar. Diante de um erro de um familiar próximo, você quer cobrar duramente.",
+                "domain": "Família",
+                "domain_color": "#c4956a",
+                "options": ["Exige a perfeição e critica o erro severamente na conversa", "Demonstra acolhimento na falha, oferecendo suporte em vez de cobrança"]
+            },
+            {
+                "text": "No ambiente social, você sempre assume o papel de 'cuidador' que escuta a todos, mas nunca expõe suas dores.",
+                "domain": "Social",
+                "domain_color": "#5a9e9e",
+                "options": ["Continua apenas escutando e guardando seus problemas no peito", "Arrisca-se a compartilhar algo íntimo e pede apoio ativo aos amigos"]
+            }
+        ],
+        "mosaic_icons": {
+            "left": "🔄",
+            "right": "✨"
+        }
+    },
+    "habilidades_sociais": {
+        "id": "habilidades_sociais",
+        "title": "Habilidades com pessoas",
+        "force_pair": ["Recuar", "Avançar"],
+        "scenes": [
+            {
+                "text": "Você chega a um evento profissional com dezenas de pessoas desconhecidas conversando em grupos.",
+                "domain": "Trabalho",
+                "domain_color": "#4a6fa5",
+                "options": ["Fica perto do buffet mexendo no celular de forma discreta", "Aproxima-se de uma roda de conversa puxando assunto amigável"]
+            },
+            {
+                "text": "Um desentendimento bobo no trânsito ou no caixa do mercado gera uma discussão exaltada por parte do outro.",
+                "domain": "Social",
+                "domain_color": "#5a9e9e",
+                "options": ["Pede desculpas e aceita a queixa calado para encerrar o atrito", "Posiciona-se com clareza mantendo o tom firme sem entrar na agressão"]
+            },
+            {
+                "text": "Sua equipe precisa de um voluntário para liderar uma apresentação importante para o cliente.",
+                "domain": "Trabalho",
+                "domain_color": "#4a6fa5",
+                "options": ["Espera que outro colega se candidate primeiro", "Levanta a mão na hora e assume a responsabilidade da liderança"]
+            }
+        ],
+        "mosaic_icons": {
+            "left": "🛡️",
+            "right": "🚀"
+        }
+    },
+    "idiomas": {
+        "id": "idiomas",
+        "title": "Idiomas que você fala",
+        "force_pair": ["Aprisionar", "Expandir"],
+        "scenes": [
+            {
+                "text": "Em um jantar com conhecidos estrangeiros, todos começam a falar inglês e você teme errar a pronúncia.",
+                "domain": "Social",
+                "domain_color": "#5a9e9e",
+                "options": ["Prefere ficar em silêncio ou falar apenas o mínimo necessário", "Arrisca-se a conversar com erros mesmo, priorizando a conexão"]
+            },
+            {
+                "text": "Sua empresa abre vagas para um projeto internacional que exige comunicação diária em outra língua.",
+                "domain": "Trabalho",
+                "domain_color": "#4a6fa5",
+                "options": ["Evita se candidatar com receio de não estar pronto", "Candidata-se à vaga aceitando o desafio como aprendizado prático"]
+            },
+            {
+                "text": "Você está consumindo conteúdo na internet e se depara com um artigo técnico complexo e valioso em um idioma que estuda.",
+                "domain": "Criatividade",
+                "domain_color": "#7a5a9e",
+                "options": ["Procura a tradução automática rápida na tela", "Lê o artigo original devagar anotando os termos novos"]
+            }
+        ],
+        "mosaic_icons": {
+            "left": "🔒",
+            "right": "🔑"
+        }
+    },
+    "rituais": {
+        "id": "rituais",
+        "title": "Rituais que você vive",
+        "force_pair": ["Abandonar", "Criar"],
+        "scenes": [
+            {
+                "text": "Você mudou-se de cidade e o natal está chegando. As festividades antigas parecem inacessíveis agora.",
+                "domain": "Família",
+                "domain_color": "#c4956a",
+                "options": ["Deixa a data passar em branco sem decorações ou celebrações", "Organiza um pequeno jantar adaptado ou rito novo para marcar a data"]
+            },
+            {
+                "text": "A correria do dia a dia fez com que o hábito de jantar à mesa em família fosse substituído por refeições rápidas no celular.",
+                "domain": "Família",
+                "domain_color": "#c4956a",
+                "options": ["Aceita o hábito prático de comer rápido no sofá", "Estabelece a regra de refeição conjunta à mesa aos domingos"]
+            },
+            {
+                "text": "Você concluiu um projeto acadêmico ou profissional importante após meses de esforço intenso.",
+                "domain": "Trabalho",
+                "domain_color": "#4a6fa5",
+                "options": ["Emenda imediatamente no próximo trabalho sem celebrar", "Tira o dia para fazer um brinde ou ritual pessoal de comemoração"]
+            }
+        ],
+        "mosaic_icons": {
+            "left": "🍂",
+            "right": "🕯️"
+        }
+    },
+    "comportamento": {
+        "id": "comportamento",
+        "title": "Jeito de se comportar",
+        "force_pair": ["Autêntico", "Adaptado"],
+        "scenes": [
+            {
+                "text": "Em uma roda de amigos íntimos, o grupo começa a adotar uma opinião polêmica com a qual você discorda intimamente.",
+                "domain": "Social",
+                "domain_color": "#5a9e9e",
+                "options": ["Manifesta sua discordância claramente assumindo sua posição singular", "Concorda superficialmente ou muda de assunto para não parecer discordante"]
+            },
+            {
+                "text": "Você está em um coquetel corporativo formal cercado por diretores importantes do setor.",
+                "domain": "Trabalho",
+                "domain_color": "#4a6fa5",
+                "options": ["Brinca e fala sobre seus reais interesses de forma espontânea", "Policia cada gesto e assunto para projetar uma imagem ideal de sobriedade"]
+            },
+            {
+                "text": "Durante uma discussão conjugal ou familiar, você sente vontade de chorar diante de um argumento difícil.",
+                "domain": "Relação",
+                "domain_color": "#b06e8a",
+                "options": ["Chora abertamente, demonstrando sua vulnerabilidade sem filtros", "Prende o choro e endurece a voz para não demonstrar fraqueza"]
+            }
+        ],
+        "mosaic_icons": {
+            "left": "👤",
+            "right": "🎭"
+        }
+    },
+    "marcos_identidade": {
+        "id": "marcos_identidade",
+        "title": "Marcos da sua identidade",
+        "force_pair": ["Apegar", "Soltar"],
+        "scenes": [
+            {
+                "text": "Você se aposentou ou mudou radicalmente de carreira recentemente, mas as pessoas ainda te cobram a antiga postura corporativa.",
+                "domain": "Trabalho",
+                "domain_color": "#4a6fa5",
+                "options": ["Mantém os velhos cartões, termos e rotinas antigas na mente", "Apresenta-se com sua nova ocupação, aceitando a virada de página"]
+            },
+            {
+                "text": "Uma amizade de longa data tornou-se tóxica ou distante devido a caminhos e valores incompatíveis hoje.",
+                "domain": "Social",
+                "domain_color": "#5a9e9e",
+                "options": ["Mantém o vínculo forçado apenas pela história passada em comum", "Despede-se da amizade com gratidão, permitindo que ela faça parte do passado"]
+            },
+            {
+                "text": "Você herdou móveis ou objetos antigos de um parente falecido que ocupam muito espaço e não combinam com sua casa.",
+                "domain": "Família",
+                "domain_color": "#c4956a",
+                "options": ["Guarda tudo por apego à história e memória do parente", "Doa ou vende os itens guardando apenas lembranças afetivas simbólicas"]
+            }
+        ],
+        "mosaic_icons": {
+            "left": "📦",
+            "right": "🌊"
+        }
+    },
+    "emocoes": {
+        "id": "emocoes",
+        "title": "Emoções que expressa",
+        "force_pair": ["Contêr", "Liberar"],
+        "scenes": [
+            {
+                "text": "Você sente uma raiva imensa ao ver um serviço público ou privado ser mal executado na sua frente.",
+                "domain": "Conflito",
+                "domain_color": "#c75a5a",
+                "options": ["Engole a raiva e se retira fingindo tranquilidade", "Reclama com firmeza e expressa sua indignação aos responsáveis"]
+            },
+            {
+                "text": "Um amigo querido prepara uma surpresa comovente para celebrar uma conquista sua.",
+                "domain": "Social",
+                "domain_color": "#5a9e9e",
+                "options": ["Contém o choro e agradece de maneira contida e polida", "Chora, abraça o amigo e demonstra alegria intensa sem reservas"]
+            },
+            {
+                "text": "Você se sente extremamente triste e vulnerável após um dia repleto de frustrações pessoais.",
+                "domain": "Saúde",
+                "domain_color": "#5a9e7c",
+                "options": ["Guarda a tristeza para si e assiste a um filme para se distrair", "Permite-se chorar no quarto até aliviar o peso interno"]
+            }
+        ],
+        "mosaic_icons": {
+            "left": "🤐",
+            "right": "🌋"
+        }
+    },
+    "lidar_emocoes": {
+        "id": "lidar_emocoes",
+        "title": "Como lida com emoções",
+        "force_pair": ["Evitar", "Regular"],
+        "scenes": [
+            {
+                "text": "Uma onda intensa de ansiedade surge logo antes de você entrar em uma reunião com a diretoria.",
+                "domain": "Trabalho",
+                "domain_color": "#4a6fa5",
+                "options": ["Tenta focar obstinadamente na apresentação para 'esquecer' a ansiedade", "Para por 2 minutos, foca na expiração lenta e acalma o sistema nervoso"]
+            },
+            {
+                "text": "Você sente frustração severa após uma conversa tensa com seu parceiro(a).",
+                "domain": "Relação",
+                "domain_color": "#b06e8a",
+                "options": ["Sai de casa para beber ou fazer compras buscando alívio rápido", "Senta-se em silêncio investigando de onde vem tanta frustração e raiva"]
+            },
+            {
+                "text": "O acúmulo de cobranças familiares te deixa à beira de um colapso nervoso de estresse.",
+                "domain": "Família",
+                "domain_color": "#c4956a",
+                "options": ["Continua agindo no automático ignorando a exaustão iminente", "Cancela compromissos não vitais para dormir e repousar a mente"]
+            }
+        ],
+        "mosaic_icons": {
+            "left": "🛡️",
+            "right": "🔧"
+        }
+    },
+    "habitos": {
+        "id": "habitos",
+        "title": "Hábitos do dia a dia",
+        "force_pair": ["Automatizar", "Deliberar"],
+        "scenes": [
+            {
+                "text": "Seu alarme toca de manhã e o celular já está ao lado da cama pronto para ser checado.",
+                "domain": "Saúde",
+                "domain_color": "#5a9e7c",
+                "options": ["Abre as redes sociais por reflexo mecânico e fica 30 minutos na cama", "Levanta-se imediatamente sem olhar as notificações para meditar ou alongar"]
+            },
+            {
+                "text": "No trabalho, ao terminar uma tarefa, você sente o impulso automático de abrir abas de notícias.",
+                "domain": "Trabalho",
+                "domain_color": "#4a6fa5",
+                "options": ["Navega por reflexo dispersando seu foco sem notar o tempo", "Para e escolhe conscientemente beber água ou respirar na janela"]
+            },
+            {
+                "text": "Antes de dormir, você costuma ligar a TV para pegar no sono, mesmo sabendo que acorda cansado.",
+                "domain": "Saúde",
+                "domain_color": "#5a9e7c",
+                "options": ["Mantém a TV ligada no automático para não encarar o silêncio", "Desliga todas as telas 1 hora antes e lê um livro físico à luz suave"]
+            }
+        ],
+        "mosaic_icons": {
+            "left": "🤖",
+            "right": "🧠"
+        }
+    },
+    "saude": {
+        "id": "saude",
+        "title": "Como está sua saúde",
+        "force_pair": ["Cuidar", "Negligenciar"],
+        "scenes": [
+            {
+                "text": "Você sente uma dor nas costas persistente há duas semanas que atrapalha seu sono.",
+                "domain": "Saúde",
+                "domain_color": "#5a9e7c",
+                "options": ["Marca uma consulta médica ou fisioterapia para investigar", "Continua trabalhando tomando anti-inflamatórios por conta própria"]
+            },
+            {
+                "text": "O cansaço mental do trabalho está altíssimo e você sente sintomas leves de Burnout.",
+                "domain": "Trabalho",
+                "domain_color": "#4a6fa5",
+                "options": ["Reduz o ritmo, conversa com a gestão e estabelece limites", "Aumenta as horas de entrega achando que é apenas preguiça passageira"]
+            },
+            {
+                "text": "Durante as refeições diárias, você se vê devorando comida rápida enquanto responde mensagens no celular.",
+                "domain": "Saúde",
+                "domain_color": "#5a9e7c",
+                "options": ["Desliga o celular e mastiga devagar saboreando a refeição", "Come com pressa de forma mecânica para voltar rápido ao trabalho"]
+            }
+        ],
+        "mosaic_icons": {
+            "left": "❤️",
+            "right": "⚠️"
+        }
+    },
+    "decide": {
+        "id": "decide",
+        "title": "Como decide",
+        "force_pair": ["Hesitar", "Agir"],
+        "scenes": [
+            {
+                "text": "Você precisa escolher o destino das suas férias e tem três opções atraentes na mesa.",
+                "domain": "Criatividade",
+                "domain_color": "#7a5a9e",
+                "options": ["Pesquisa semanas, faz planilhas comparativas e adia a compra", "Escolhe uma opção razoável no mesmo dia e faz a reserva imediata"]
+            },
+            {
+                "text": "Uma oportunidade de investimento financeiro interessante surge com prazo curto de adesão.",
+                "domain": "Finanças",
+                "domain_color": "#c4a55a",
+                "options": ["Analisa os riscos longamente perdendo o prazo de fechamento", "Toma a decisão com base nas informações que já possui no momento"]
+            },
+            {
+                "text": "Você precisa resolver se aceita um convite de casamento no mesmo dia de outro compromisso.",
+                "domain": "Social",
+                "domain_color": "#5a9e9e",
+                "options": ["Fica postergando a resposta para não chatear nenhum dos lados", "Responde recusando um dos convites com transparência imediata"]
+            }
+        ],
+        "mosaic_icons": {
+            "left": "❓",
+            "right": "🎯"
+        }
+    },
+    "metacognicao": {
+        "id": "metacognicao",
+        "title": "Como pensa sobre pensar",
+        "force_pair": ["Ruminar", "Soltar"],
+        "scenes": [
+            {
+                "text": "Você cometeu um pequeno equívoco verbal em uma apresentação com clientes hoje.",
+                "domain": "Trabalho",
+                "domain_color": "#4a6fa5",
+                "options": ["Passa a noite repassando a cena na mente pensando no que deveria ter dito", "Aceita o deslize como humano e foca em suas tarefas da noite"]
+            },
+            {
+                "text": "Um familiar fez uma crítica sutil à sua aparência durante o almoço de domingo.",
+                "domain": "Família",
+                "domain_color": "#c4956a",
+                "options": ["Fica horas tentando adivinhar as segundas intenções por trás do comentário", "Decide que a opinião do outro não te define e esquece o comentário"]
+            },
+            {
+                "text": "Ao tomar uma decisão importante de vida, você começa a conjecturar dezenas de cenários ruins.",
+                "domain": "Saúde",
+                "domain_color": "#5a9e7c",
+                "options": ["Deixa-se arrastar pelo redemoinho mental de preocupações", "Reconhece o excesso de pensamentos e foca nos fatos do presente"]
+            }
+        ],
+        "mosaic_icons": {
+            "left": "🔁",
+            "right": "🍃"
+        }
     }
 }
 
@@ -490,9 +1244,30 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="ELIZA 2026", lifespan=lifespan)
 
+def build_cors_origins() -> list[str]:
+    raw_origins = os.getenv("CORS_ORIGINS", "")
+    if raw_origins.strip():
+        return [origin.strip() for origin in raw_origins.split(",") if origin.strip()]
+
+    origins = [
+        "https://autoconhecer.netlify.app",
+        "https://eliza.mdh-hability.com",
+    ]
+    if os.getenv("ENVIRONMENT", "").lower() != "production":
+        origins.extend([
+            "http://localhost:3000",
+            "http://localhost:4173",
+            "http://localhost:8001",
+            "http://127.0.0.1:3000",
+            "http://127.0.0.1:4173",
+            "http://127.0.0.1:8001",
+        ])
+    return origins
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://autoconhecer.netlify.app", "http://localhost:8001", "http://localhost:*"],
+    allow_origins=build_cors_origins(),
+    allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -700,22 +1475,36 @@ async def websocket_endpoint(websocket: WebSocket, conversation_id: str):
         while True:
             user_message = await websocket.receive_text()
             
-            # Detecta retorno de um OC completado
-            if user_message.startswith("__oc_completed__:"):
-                oc_id = user_message.split(":", 1)[1].strip()
-                oc_summary = await get_oc_summary(agent.conversation_id, oc_id, pool)
-                
-                if oc_summary:
+            # Detecta retorno de um OC completado (formato JSON)
+            try:
+                oc_data = json.loads(user_message)
+                if oc_data.get("type") == "oc_completed":
+                    oc_id = oc_data.get("oc_id", "desconhecido")
+                    title = oc_data.get("title", "Objeto de Conhecimento")
+                    choices = oc_data.get("choices", [])
+                    force_pair = oc_data.get("force_pair", [])
+                    scenes = oc_data.get("scenes", [])
+                    
+                    # Constrói o resumo das escolhas
+                    summary_parts = []
+                    for i, choice in enumerate(choices):
+                        if i < len(scenes) and choice < len(scenes[i].get("options", [])):
+                            domain = scenes[i].get("domain", "?")
+                            option = scenes[i]["options"][choice]
+                            force = force_pair[choice] if choice < len(force_pair) else "?"
+                            summary_parts.append(f"em {domain}: {force} ({option})")
+                    
+                    summary = "; ".join(summary_parts) if summary_parts else "escolhas mistas"
+                    
                     oc_context = (
-                        f"[O usuário acabou de completar o exercício de autoconhecimento '{oc_summary['title']}'.\n"
-                        f"Resumo das inclinações: {oc_summary['summary']}.\n"
+                        f"[O usuário acabou de explorar o autoconhecimento '{title}'.\n"
+                        f"Resumo das inclinações: {summary}.\n"
                         f"Não mencione 'exercício', 'app' ou 'sistema'. Reaja naturalmente, como se tivesse percebido "
                         f"uma mudança sutil no jeito dele falar. Pergunte como ele se sente após essa reflexão.]"
                     )
                     
                     await websocket.send_json({"type": "typing", "content": True})
                     try:
-                        # chat() já insere a mensagem no histórico e persiste no banco
                         async for token in agent.chat(oc_context):
                             await websocket.send_json({"type": "token", "content": token})
                         await websocket.send_json({"type": "typing", "content": False})
@@ -724,7 +1513,9 @@ async def websocket_endpoint(websocket: WebSocket, conversation_id: str):
                     
                     await websocket.send_json({"type": "emotion", "content": "calm"})
                     await websocket.send_json({"type": "end"})
-                continue
+                    continue
+            except (json.JSONDecodeError, AttributeError):
+                pass  # Não é JSON, continua como mensagem normal
             
             # 1. Verifica gatilhos de cards no prompt do usuário
             user_triggers = detect_card_triggers(user_message, triggered_cards)
